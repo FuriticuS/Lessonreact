@@ -5,7 +5,7 @@ import {BrowserRouter} from "react-router-dom";
 import App from './App';
 
 import Store from "./redux/redux-store";
-import StoreContext from "./redux/StoreContext";
+import StoreContext, {Provider} from "./redux/StoreContext";
 
 import * as serviceWorker from "./serviceWorker";
 
@@ -17,7 +17,7 @@ let rerenderEntireTree = () => {
         // нужен для работы с Router
         <BrowserRouter>
 
-            <StoreContext.Provider value={Store}>
+            <Provider Store={Store}>
                 <App
 
                 Store={Store}
@@ -26,7 +26,7 @@ let rerenderEntireTree = () => {
                 dispatch={Store.dispatch.bind(Store)}
 
                 />
-            </StoreContext.Provider>
+            </Provider>
 
         </BrowserRouter>, document.getElementById('root'));
 }
