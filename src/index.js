@@ -5,6 +5,7 @@ import {BrowserRouter} from "react-router-dom";
 import App from './App';
 
 import Store from "./redux/redux-store";
+import StoreContext from "./redux/StoreContext";
 
 import * as serviceWorker from "./serviceWorker";
 
@@ -15,16 +16,18 @@ let rerenderEntireTreeIndex = () => {
     ReactDOM.render(
         // нужен для работы с Router
         <BrowserRouter>
-            <App
 
-            Store={Store}
+            <StoreContext.Provider value={Store}>
+                <App
 
-            appState={Store.getState()}
+                Store={Store}
+                appState={Store.getState()}
+                //--- вызываем только один метод dispatch в котором все наши функции
+                dispatch={Store.dispatch.bind(Store)}
 
-            //--- вызываем только один метод dispatch в котором все наши функции
-            dispatch={Store.dispatch.bind(Store)}
+                />
+            </StoreContext.Provider>
 
-            />
         </BrowserRouter>, document.getElementById('root'));
 }
 //------------------- вызов функции перерисовки!!!!!!!!

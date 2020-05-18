@@ -2,9 +2,10 @@ import React from "react";
 
 import "./profile.css";
 
+import MypostsContainer from "./Myposts/MypostsContainer";
 // импорт постов
 import Info from "./info/Info";
-import MypostsContainer from "./Myposts/MypostsContainer";
+
 
 const Profile = (props) => {
   return (
@@ -12,9 +13,7 @@ const Profile = (props) => {
 
           <Info />
 
-          <MypostsContainer
-              Store={props.Store}
-          />
+          <MypostsContainer />
 
       </div>
   );

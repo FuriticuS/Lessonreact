@@ -7,13 +7,12 @@ import './css/App.css';
 import Header from "./components/header/Header";
 import Navigation from "./components/navigation/Navigation";
 import Profile from "./components/profile/Profile";
-import Dialogs from "./components/dialogs/Dialogs";
 import News from "./components/news/News";
 import Music from "./components/music/Music";
 import Settings from "./components/settings/Settings";
 import DialogsContainer from "./components/dialogs/DialogsContainer";
 
-// пример - функция для ссылки на компоненту
+// пример - функция для вывода компоненты
 let settingsPage = ()=> <Settings /> ;
 
 const App = (props) => {
