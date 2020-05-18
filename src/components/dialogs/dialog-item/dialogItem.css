@@ -1,0 +1,11 @@
+/*--------------------------------------------------- dialog-item */
+.dialogs-users-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.dialogs-users-item img{
+    width: 20px;
+    height: 20px;
+}

@@ -1,0 +1,68 @@
+/*-------------------------------------------- стили для всего сайта ----*/
+
+/*---------------- общие стили*/
+
+h1 {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+h1,h2,h3,h4,h5,p, span, li {
+  font-family: Arial, sans-serif;
+}
+
+a {
+  font-family: Arial, sans-serif;
+  font-size: 24px;
+  color: #fff;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+a:hover {
+  color: #0024a7;
+  transition: all .2s ease;
+}
+
+/*---------------- построение сайта на grid*/
+.app-wrapper {
+  display: grid;
+
+  /* расположение блоков*/
+  grid-template-areas:
+  "header header"
+  "navigation content";
+
+  grid-template-rows: 100px 1fr; /* разбивка для всего сайта по строкам header - 60px и контент - 1 фракция*/
+  grid-template-columns: 2fr 10fr; /* разбивка для всего сайта по строкам*/
+  grid-gap: 5px; /* расстояние между блоками*/
+
+  width: 1200px;
+  margin: 0 auto;
+}
+
+.header {
+  grid-area: header; /* название для grid*/
+
+  padding: 10px;
+  background: #c2cedc;
+}
+
+.navigation {
+  grid-area: navigation; /* название для grid*/
+
+  padding: 10px;
+  background: #abcdef;
+}
+
+.content {
+  grid-area: content; /* название для grid*/
+
+  background: #F4A460;
+}
+
+/*------------------------------------------------- стили для header*/
+
+.header img{
+  height: 100%;
+}

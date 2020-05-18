@@ -1,0 +1,12 @@
+/*------------------------------------------ navigation*/
+.navigation {
+    padding: 20px;
+}
+
+.navigation ul .active {
+    color: #00008b;
+}
+
+.navigation-settings {
+    margin-top: 40px;
+}

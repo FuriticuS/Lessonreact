@@ -1,0 +1,56 @@
+/*--------------------------------------------------- dialogs*/
+.dialogs {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 20px;
+}
+
+.dialogs-users, .dialogs-messages {
+    display: flex;
+    flex-direction: column;
+
+    font-size: 24px;
+}
+
+.dialogs-users {
+    width: 15%;
+    border-right: 1px solid #c8d1e2;
+}
+
+.dialogs-users a {
+    color: #000;
+}
+
+.dialogs-users a:hover {
+    color: #fff;
+}
+
+.dialogs-users .active {
+    color: #fff;
+}
+
+.dialogs-messages {
+    width: 80%;
+}
+
+.dialogs-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 200px;
+    margin-top: 50px;
+}
+
+.dialogs-form textarea{
+    width: 50%;
+    height: 100%;
+    margin-bottom: 20px;
+}
+
+.dialogs-form button{
+    width: 20%;
+}

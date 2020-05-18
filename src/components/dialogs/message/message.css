@@ -1,0 +1,31 @@
+/*--------------------------------------------------- message*/
+.dialogs-messages-item {
+    display: flex;
+    justify-content: space-between;
+}
+
+.messages-item-left{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    text-align: left;
+
+    width: auto;
+    height: auto;
+    padding: 10px;
+    border: 2px solid silver;
+    background: #F0FFFF;
+    border-radius: 50%;
+}
+.messages-item-right{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    text-align: right;
+    width: auto;
+    height: auto;
+    padding: 10px;
+    border: 2px solid silver;
+    background: #00BFFF;
+    border-radius: 50%;
+}

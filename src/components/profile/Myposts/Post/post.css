@@ -1,0 +1,23 @@
+/*------------------------------------------------- post*/
+.myposts-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    margin-bottom: 20px;
+}
+.myposts-item img {
+    width: 50px;
+    height: 50px;
+
+    border-radius: 50%;
+}
+
+.myposts-item p {
+    margin-left: 20px;
+}
+
+.mypost-like {
+    display: block;
+    margin-top: 30px;
+}

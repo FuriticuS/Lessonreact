@@ -1,0 +1,32 @@
+/*--------------------------------------------- friends*/
+
+.friends {
+    display: flex;
+    flex-direction: column;
+
+    margin-top: 40%;
+}
+
+.friends h2 {
+    font-weight: normal;
+    font-size: 42px;
+    color: #fff;
+}
+
+.friends-list {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.friends-list li{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.friends-list img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+}
