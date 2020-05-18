@@ -12,7 +12,7 @@ import * as serviceWorker from "./serviceWorker";
 
 //------------------- функция для перерисовки дерева при изменении или добавлении новых данных
 // ----- передаем ее в subscribe()
-let rerenderEntireTreeIndex = () => {
+let rerenderEntireTree = () => {
     ReactDOM.render(
         // нужен для работы с Router
         <BrowserRouter>
@@ -31,13 +31,11 @@ let rerenderEntireTreeIndex = () => {
         </BrowserRouter>, document.getElementById('root'));
 }
 //------------------- вызов функции перерисовки!!!!!!!!
-rerenderEntireTreeIndex(Store.getState());
+rerenderEntireTree();
 // ------------------------------------------- функция call-back для перерисовки дом дерева
 // ---- передаем ее в State (точее берем ее от туда для отрисовки дерева)
 Store.subscribe(()=> {
-    let state = Store.getState();
-    rerenderEntireTreeIndex(state);
+    rerenderEntireTree();
 });
 
 serviceWorker.unregister();
-

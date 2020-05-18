@@ -15,7 +15,7 @@ const MypostsContainer = (props) => {
 
                 // сторона UI
                 let addPost= () => {
-                    state.dispatch(addPostActionCreator()); // ---- функция добавления нового поста УЖЕ из STORE
+                    Store.dispatch(addPostActionCreator()); // ---- функция добавления нового поста УЖЕ из STORE
                 }
 
                 //------------------------------ функция обработчик события на изменения в textarea
@@ -23,7 +23,7 @@ const MypostsContainer = (props) => {
                 // сторона BLL
                 let onPostChange = (words) => {
                     let text = updatePostTextActionCreator(words); // current - свойства объекта !!!!!!
-                    state.dispatch(text); // ---- функция прокидывания букв из textarea через BLL в UI УЖЕ из STORE
+                    Store.dispatch(text); // ---- функция прокидывания букв из textarea через BLL в UI УЖЕ из STORE
                 }
 
                 return (

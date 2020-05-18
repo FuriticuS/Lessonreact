@@ -12,17 +12,17 @@ const DialogsContainer = (props) => {
             { (Store) => {
 
                     // наш файл state где хранятся все данные
-                    let state = Store.getState().dialogsPage;
+                    let state = Store.getState();
 
                     // сторона UI
                     let addMessage = () => {
-                        state.dispatch(addNewMessageActionCreator());
+                        Store.dispatch(addNewMessageActionCreator());
                     }
 
                     // сторона BLL
                     let onChangeTextarea = (text) => {
                         let message = updateMessageTextActionCreator(text);
-                        state.dispatch(message);
+                        Store.dispatch(message);
                     }
 
                     return (
@@ -30,11 +30,11 @@ const DialogsContainer = (props) => {
                             addMessage={addMessage}
                             onChangeTextarea={onChangeTextarea}
 
-                            dialogsData={state.dialogsData}
-                            textData={state.textData}
-                            newMessagesText = {state.newMessagesText}
+                            dialogsData={state.dialogsPage.dialogsData}
+                            textData={state.dialogsPage.textData}
+                            newMessagesText = {state.dialogsPage.newMessagesText}
 
-                            dialogsPage = {state}
+                            dialogsPage = {state.dialogsPage}
                         />
                     )
                 }
