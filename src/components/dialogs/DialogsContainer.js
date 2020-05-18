@@ -1,47 +1,42 @@
 import React from "react";
 import Dialogs from "./Dialogs";
 
+// ------ import функции CONNECT для нашей компоненты
+import {connect} from "react-redux";
+
 // ------ import функции Action create, которые хранят тип для наших функций, из reducer
 import {addNewMessageActionCreator, updateMessageTextActionCreator} from "../../redux/reducer/dialogsPage";
-import StoreContext from "../../redux/StoreContext";
 
-const DialogsContainer = (props) => {
+// ------ определение функций для CONNECT
+// -- функции с данными где State это State = Store.getState();
+let mapStateToProp = (State)=> {
+    return {
+        dialogsData: State.dialogsPage.dialogsData,
+        textData: State.dialogsPage.textData,
+        newMessagesText: State.dialogsPage.newMessagesText,
+        dialogsPage: State.dialogsPage
+    }
+}
+// -- функции с call-back
+let mapDispatchToProps = (dispatch)=> {
+    // сторона UI
+    let addMessage = () => {
+        dispatch(addNewMessageActionCreator());
+    }
 
-    return (
-        <StoreContext.Consumer>
-            { (Store) => {
+    // сторона BLL
+    let onChangeTextarea = (text) => {
+        let message = updateMessageTextActionCreator(text);
+        dispatch(message);
+    }
 
-                    // наш файл state где хранятся все данные
-                    let state = Store.getState();
+    return {
+        addMessage: {addMessage},
+        onChangeTextarea: {onChangeTextarea}
+    }
+}
 
-                    // сторона UI
-                    let addMessage = () => {
-                        Store.dispatch(addNewMessageActionCreator());
-                    }
-
-                    // сторона BLL
-                    let onChangeTextarea = (text) => {
-                        let message = updateMessageTextActionCreator(text);
-                        Store.dispatch(message);
-                    }
-
-                    return (
-                        <Dialogs
-                            addMessage={addMessage}
-                            onChangeTextarea={onChangeTextarea}
-
-                            dialogsData={state.dialogsPage.dialogsData}
-                            textData={state.dialogsPage.textData}
-                            newMessagesText = {state.dialogsPage.newMessagesText}
-
-                            dialogsPage = {state.dialogsPage}
-                        />
-                    )
-                }
-
-            }
-        </StoreContext.Consumer>
-    );
-};
+// ------ в первых скобках = настройках компоненты , во вторых скобках для какой компоненты
+const DialogsContainer = connect(mapStateToProp, mapDispatchToProps) (Dialogs);
 
 export default DialogsContainer;
