@@ -11,9 +11,8 @@ import News from "./components/news/News";
 import Music from "./components/music/Music";
 import Settings from "./components/settings/Settings";
 import DialogsContainer from "./components/dialogs/DialogsContainer";
+import UsersContainer from "./components/users/UsersContainer";
 
-// пример - функция для вывода компоненты
-let settingsPage = ()=> <Settings /> ;
 
 const App = (props) => {
     return (
@@ -34,7 +33,10 @@ const App = (props) => {
                 <Route path='/music' render={ () => <Music /> }/>
 
                 {/*можно вызвать как имя функции*/}
-                <Route path='/settings' render={ settingsPage }/>
+                <Route path='/users' render={ ()=> <UsersContainer /> }/>
+
+                {/*можно вызвать как имя функции*/}
+                <Route path='/settings' render={ ()=> <Settings /> }/>
 
             </div>
 

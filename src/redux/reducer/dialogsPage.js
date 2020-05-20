@@ -1,6 +1,6 @@
 // ------ action type сделаем переменные для все type в наших функциях
-const addNewMessage = 'ADD-NEW-MESSAGE';
-const updateMessageText = 'UPDATE-MESSAGE-TEXT';
+const ADD_NEW_MESSAGE = 'ADD-NEW-MESSAGE';
+const UPDATE_MESSAGE_TEXT = 'UPDATE-MESSAGE-TEXT';
 
 //для нашего Redux зададим начальные значения
 let initialState = {
@@ -52,7 +52,7 @@ let initialState = {
 const dialogsPageReducer = (state = initialState, action) => {
     // вместо if используем switch
     switch (action.type) {
-        case addNewMessage :
+        case ADD_NEW_MESSAGE:
             let newMessages = {
                 id: 7,
                 text: state.newMessagesText
@@ -63,7 +63,7 @@ const dialogsPageReducer = (state = initialState, action) => {
                 textData: [...state.textData, newMessages],
             }
 
-        case updateMessageText:
+        case UPDATE_MESSAGE_TEXT:
             return{
                 ...state,
                 newMessagesText: action.newMessage
@@ -71,7 +71,6 @@ const dialogsPageReducer = (state = initialState, action) => {
 
         default:
             return state;
-
     }
 }
 
@@ -79,13 +78,13 @@ const dialogsPageReducer = (state = initialState, action) => {
 // ------ page Dialogs
 export const addNewMessageActionCreator = () => {
     return {
-        type: addNewMessage
+        type: ADD_NEW_MESSAGE
     }
 }
 
 export const updateMessageTextActionCreator = (message) => {
     return {
-        type:updateMessageText,
+        type:UPDATE_MESSAGE_TEXT,
         newMessage:message
     }
 }

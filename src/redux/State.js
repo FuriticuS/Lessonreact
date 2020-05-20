@@ -4,7 +4,7 @@ import dialogsPageReducer from "./reducer/dialogsPage";
 import sidebarReducer from "./reducer/sidebar";
 
 // ------ объект ООП в котором будут храниться наши массивы(они же свойства) и методы(они же функции)
-let Store = {
+let State = {
     //--- все наши данные
     _State : {
 
@@ -116,4 +116,4 @@ let Store = {
 
 };
 
-export default Store;
+export default State;

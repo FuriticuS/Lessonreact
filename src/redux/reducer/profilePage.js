@@ -1,6 +1,6 @@
 // ------ action type сделаем переменные для все type в наших функциях
-const addPost = 'ADD-POST';
-const updatePostText = 'UPDATE-POST-TEXT';
+const ADD_POST = 'ADD-POST';
+const UPDATE_POST_TEXT = 'UPDATE-POST-TEXT';
 
 //для нашего Redux зададим начальные значения
 let initialState = {
@@ -20,9 +20,8 @@ const profilePageReducer = (state = initialState, action) => {
     // вместо if используем switch
 
     switch (action.type) {
-
         // case - возможные варианты type
-        case addPost :
+        case ADD_POST :
             // взяли из функции addPosts()
             let newPost= {
                 id:6,
@@ -32,11 +31,11 @@ const profilePageReducer = (state = initialState, action) => {
 
             return {
                 ...state,
+                postData: [...state.postData, newPost],
                 newPostText :'Введите сообщение для страницы Profile',
-                postData: [...state.postData, newPost]
             }
 
-        case updatePostText :
+        case UPDATE_POST_TEXT :
             return {
                 ...state,
                 newPostText: action.newText
@@ -52,13 +51,13 @@ const profilePageReducer = (state = initialState, action) => {
 // ------ page Profile
 export const addPostActionCreator = () => {
     return {
-        type:addPost
+        type:ADD_POST
     }
 }
 
 export const updatePostTextActionCreator = (text) => {
     return {
-        type:updatePostText,
+        type:UPDATE_POST_TEXT,
         newText: text
     }
 }

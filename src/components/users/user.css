@@ -1,0 +1,9 @@
+/*---------------------------------------------- user*/
+.left-user-img {
+    width: 150px;
+    height: 150px;
+}
+
+.left-user-img img{
+    width: 100%;
+}

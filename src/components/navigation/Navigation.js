@@ -17,6 +17,7 @@ const Navigation = (props) => {
                 <li><NavLink to="/dialogs">Messages</NavLink></li>
                 <li><NavLink to="/news">News</NavLink></li>
                 <li><NavLink to="/music">Music</NavLink></li>
+                <li><NavLink to="/users">Users</NavLink></li>
 
                 <li className="navigation-settings"><NavLink to="/settings">Settings</NavLink></li>
             </ul>
