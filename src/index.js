@@ -7,37 +7,18 @@ import {Provider} from "react-redux";
 
 import App from './App';
 
-import Store from "./redux/redux-store";
+import Store from "./redux/state";
 
 import * as serviceWorker from "./serviceWorker";
 
+ReactDOM.render(
+    // нужен для работы с Router
+    <BrowserRouter>
 
-//------------------- функция для перерисовки дерева при изменении или добавлении новых данных
-// ----- передаем ее в subscribe()
-let rerenderEntireTree = () => {
-    ReactDOM.render(
-        // нужен для работы с Router
-        <BrowserRouter>
+        <Provider Store={Store}>
+            <App />
+        </Provider>
 
-            <Provider Store={Store}>
-                <App
-
-                Store={Store}
-                appState={Store.getState()}
-                //--- вызываем только один метод dispatch в котором все наши функции
-                dispatch={Store.dispatch.bind(Store)}
-
-                />
-            </Provider>
-
-        </BrowserRouter>, document.getElementById('root'));
-}
-//------------------- вызов функции перерисовки!!!!!!!!
-rerenderEntireTree();
-// ------------------------------------------- функция call-back для перерисовки дом дерева
-// ---- передаем ее в State (точее берем ее от туда для отрисовки дерева)
-Store.subscribe(()=> {
-    rerenderEntireTree();
-});
+    </BrowserRouter>, document.getElementById('root'));
 
 serviceWorker.unregister();

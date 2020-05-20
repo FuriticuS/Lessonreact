@@ -7,21 +7,21 @@ import Message from "./message/Message";
 
 const Dialogs = (props) => {
 
-    let state = props.dialogsPage;
-
-    let dialogElements = state.dialogsData.map( (dialog) =>
+    let dialogElements = props.dialogsData.map( (dialog) =>
         <DialogItem
             id={dialog.id}
             name={dialog.name}
             age={dialog.age}
             avatar={dialog.avatarUrl}
+            key={dialog.id}
         />);
 
     // теперь данные берем у родительского файла через props
-    let messagesElements = state.textData.map((text) =>
+    let messagesElements = props.textData.map((text) =>
         <Message
             id={text.id}
             text={text.text}
+            key={text.id}
         />);
 
     // добавление сообщения
@@ -29,13 +29,13 @@ const Dialogs = (props) => {
 
     // сторона UI
     let addMessage = () => {
-        props.addMessage();
+        props.addNewMessage();
     }
 
     // сторона BLL
-    let onChangeTextarea = () => {
-        let message = addNewMessage.current.value;
-        props.onChangeTextarea(message);
+    let onChangeTextarea = (event) => {
+        let message = event.target.value;
+        props.updateMessageText(message);
     }
 
     //------------------------------ функция обнуления в textarea

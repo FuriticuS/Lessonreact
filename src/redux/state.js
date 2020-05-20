@@ -117,6 +117,3 @@ let Store = {
 };
 
 export default Store;
-
-// ---- глобально обратиться к Store - посмотреть что в нем приходит в консоле
-window.store = Store;

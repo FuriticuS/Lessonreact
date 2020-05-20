@@ -11,28 +11,19 @@ import {addNewMessageActionCreator, updateMessageTextActionCreator} from "../../
 // -- функции с данными где State это State = Store.getState();
 let mapStateToProp = (State)=> {
     return {
-        dialogsData: State.dialogsPage.dialogsData,
-        textData: State.dialogsPage.textData,
-        newMessagesText: State.dialogsPage.newMessagesText,
-        dialogsPage: State.dialogsPage
+        dialogsPage: State.dialogsPage,
+        newMessagesText: State.dialogsPage.newMessagesText
     }
 }
 // -- функции с call-back
 let mapDispatchToProps = (dispatch)=> {
-    // сторона UI
-    let addMessage = () => {
-        dispatch(addNewMessageActionCreator());
-    }
-
-    // сторона BLL
-    let onChangeTextarea = (text) => {
-        let message = updateMessageTextActionCreator(text);
-        dispatch(message);
-    }
-
     return {
-        addMessage: {addMessage},
-        onChangeTextarea: {onChangeTextarea}
+        addNewMessage: () => {
+            dispatch(addNewMessageActionCreator());
+        },
+        updateMessageText: (text)=> {
+            dispatch(updateMessageTextActionCreator(text));
+        }
     }
 }
 

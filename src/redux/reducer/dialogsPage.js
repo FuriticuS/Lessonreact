@@ -50,26 +50,24 @@ let initialState = {
 }
 
 const dialogsPageReducer = (state = initialState, action) => {
-
-    // для нашей функции state = this._State.dialogsPage
     // вместо if используем switch
-
     switch (action.type) {
-
         case addNewMessage :
-            // взяли из функции addNewMessages()
             let newMessages = {
                 id: 7,
                 text: state.newMessagesText
             }
-            state.textData.push(newMessages);
-            state.newMessagesText = 'Введите сообщение для страницы Dialogs';
-            return state;
+            return{
+                ...state,
+                newMessagesText : 'Введите сообщение для страницы Dialogs',
+                textData: [...state.textData, newMessages],
+            }
 
         case updateMessageText:
-            // взяли из функции updateMessagesText(newMessage)
-            state.newMessagesText = action.newMessage; //newMessage добавили в action
-            return state;
+            return{
+                ...state,
+                newMessagesText: action.newMessage
+            }
 
         default:
             return state;

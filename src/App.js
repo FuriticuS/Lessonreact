@@ -16,7 +16,6 @@ import DialogsContainer from "./components/dialogs/DialogsContainer";
 let settingsPage = ()=> <Settings /> ;
 
 const App = (props) => {
-
     return (
         <div className="app-wrapper">
             <Header/>
@@ -27,13 +26,9 @@ const App = (props) => {
             <div className="content">
 
                 {/*данные находятся в state.js*/}
-                <Route path='/profile' render={ () => <Profile
-                            Store={props.Store}
-                        />
+                <Route path='/profile' render={ () => <Profile/>
                     }/>
-                <Route path='/dialogs' render={ () => <DialogsContainer
-                            Store={props.Store}
-                        />
+                <Route path='/dialogs' render={ () => <DialogsContainer/>
                     }/>
                 <Route path='/news' render={ () => <News /> }/>
                 <Route path='/music' render={ () => <Music /> }/>

@@ -11,27 +11,19 @@ import {addPostActionCreator, updatePostTextActionCreator} from "../../../redux/
 // -- функции с данными где State это State = Store.getState();
 let mapStateToProps = (State) => {
     return {
-        postData: State.profilePage.postData,
+        profilePage: State.profilePage,
         newPostText: State.profilePage.newPostText
     }
 }
 // -- функции с call-back
 let mapDispatchToProps = (dispatch) => {
-    // сторона UI
-    let addPost= () => {
-        dispatch(addPostActionCreator()); // ---- функция добавления нового поста УЖЕ из STORE
-    }
-
-    //------------------------------ функция обработчик события на изменения в textarea
-    // сторона BLL
-    let onPostChange = (words) => {
-        let text = updatePostTextActionCreator(words); // current - свойства объекта !!!!!!
-        dispatch(text); // ---- функция прокидывания букв из textarea через BLL в UI УЖЕ из STORE
-    }
-
-    return {
-        addPostMyposts: {addPost},
-        updatePostText: {onPostChange}
+      return {
+        addPost: () => {
+            dispatch(addPostActionCreator());
+        },
+        updatePostText: (words)=> {
+            dispatch(updatePostTextActionCreator(words));
+        }
     }
 }
 

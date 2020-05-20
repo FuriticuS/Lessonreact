@@ -7,7 +7,7 @@ import MypostsContainer from "./Myposts/MypostsContainer";
 import Info from "./info/Info";
 
 
-const Profile = (props) => {
+const Profile = () => {
   return (
       <div className="profile">
 

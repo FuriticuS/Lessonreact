@@ -30,17 +30,17 @@ const profilePageReducer = (state = initialState, action) => {
                 likes: 0
             };
 
-            state.postData.push(newPost);
-
-            state.newPostText ='Введите сообщение для страницы Profile';
-
-            return state;
+            return {
+                ...state,
+                newPostText :'Введите сообщение для страницы Profile',
+                postData: [...state.postData, newPost]
+            }
 
         case updatePostText :
-            // взяли из функции updatePostText(newText)
-            state.newPostText = action.newText; //newText добавили в action cв-во
-
-            return state;
+            return {
+                ...state,
+                newPostText: action.newText
+            }
 
         default :
             return state;

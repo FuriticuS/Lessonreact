@@ -12,6 +12,7 @@ const Myposts = (props) => {
             id={post.id}
             message={post.post}
             likesCount={post.likes}
+            key={post.id}
         />
     );
 
@@ -20,14 +21,14 @@ const Myposts = (props) => {
 
     // сторона UI
     let addPost= () => {
-        props.addPostMyposts(); // ---- функция добавления нового поста УЖЕ из STORE
+        props.addPost(); // ---- функция добавления нового поста УЖЕ из STORE
     }
 
     //------------------------------ функция обработчик события на изменения в textarea
 
     // сторона BLL
-    let onPostChange = () => {
-        let text = newPostElement.current.value; // current - свойства объекта !!!!!!
+    let onPostChange = (event) => {
+        let text = event.target.value; // current - свойства объекта !!!!!!
         props.updatePostText(text); // ---- функция прокидывания букв из textarea через BLL в UI УЖЕ из STORE
     }
 
