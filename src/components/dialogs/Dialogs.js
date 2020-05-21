@@ -7,7 +7,7 @@ import Message from "./message/Message";
 
 const Dialogs = (props) => {
 
-    let dialogElements = props.dialogsData.map( (dialog) =>
+    let dialogElements = props.dialogsPage.dialogsData.map( (dialog) =>
         <DialogItem
             id={dialog.id}
             name={dialog.name}
@@ -17,7 +17,7 @@ const Dialogs = (props) => {
         />);
 
     // теперь данные берем у родительского файла через props
-    let messagesElements = props.textData.map((text) =>
+    let messagesElements = props.dialogsPage.textData.map((text) =>
         <Message
             id={text.id}
             text={text.text}

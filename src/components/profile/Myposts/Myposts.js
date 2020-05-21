@@ -7,7 +7,7 @@ import Post from "./Post/Post";
 
 const Myposts = (props) => {
 
-    let mypostsData = props.postData.map( (post) =>
+    let mypostsData = props.profilePage.postData.map( (post) =>
         <Post
             id={post.id}
             message={post.post}

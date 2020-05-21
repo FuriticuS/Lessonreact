@@ -6,7 +6,6 @@ const SET_USERS = 'SET_USERS';
 //для нашего Redux зададим начальные значения
 let initialState = {
     users:[
-        //пока пустой потому что берем всех юзеров и их данные на сервере
     ]
 };
 
@@ -15,14 +14,15 @@ const userPageReducer = (state = initialState, action) => {
     // для нашей функции state = this._State.profilePage
     // вместо if используем switch
     switch (action.type) {
+        // если надо зафоловить user
+        // 1 - возвращаем копию всего state
+        // 2 - в этом state делаем копию user
+        // 3 - и конкретному user тоже делаем копию
+        //тоже самое что и users: [...state.users]
         case FOLLOW:
-            // если надо зафоловить user
-            // 1 - возвращаем копию всего state
-            // 2 - в этом state делаем копию user
-            // 3 - и конкретному user тоже делаем копию
             return {
                 ...state,
-                users: state.user.map(user => { //тоже самое что и users: [...state.users]
+                users: state.users.map(user => {
                     if (user.id === action.userId)
                     {
                         return {...user, followed: true}
@@ -30,11 +30,11 @@ const userPageReducer = (state = initialState, action) => {
                     return user;
                 })
             };
-
+        //тоже самое что и users: [...state.users]
         case UNFOLLOW:
             return {
                 ...state,
-                users: state.user.map(user => { //тоже самое что и users: [...state.users]
+                users: state.users.map(user => {
                     if (user.id === action.userId)
                     {
                         return {...user, followed: false}
@@ -47,7 +47,7 @@ const userPageReducer = (state = initialState, action) => {
         case SET_USERS:{
             return {
                 ...state,
-                user: [...state.users, ...action.users]
+                users: [...state.users, ...action.users]
             }
         }
 
@@ -59,14 +59,14 @@ const userPageReducer = (state = initialState, action) => {
 // --- задает тип для user follow или unfollow
 export const followAC = (userId) => {
     return {
-        type:FOLLOW,
+        type:UNFOLLOW,
         userId
     }
 }
-export const unFollowAC = (UserId) => {
+export const unFollowAC = (userId) => {
     return {
-        type:UNFOLLOW,
-        UserId
+        type:FOLLOW,
+        userId
     }
 }
 // --- получаем список user с сервера и записывать его, setatь userов

@@ -1,9 +1,50 @@
 /*---------------------------------------------- user*/
+.users {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.users .left-user {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .left-user-img {
     width: 150px;
     height: 150px;
+    margin-bottom: 10px;
 }
 
 .left-user-img img{
     width: 100%;
+}
+
+.users .right-user {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+    margin-left: 10px;
+    background: #fff;
+
+    font-size: 24px;
+    font-family: Arial;
+
+    border-radius: 10px;
+}
+
+.right-user-name-user,
+.right-user-city-country {
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: deeppink;
 }

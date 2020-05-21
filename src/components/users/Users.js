@@ -1,24 +1,22 @@
 import React from "react";
 
 import './user.css';
+import * as axios from "axios";
 
-const Users = (props) => {
+let Users = (props) => {
 
-    if (props.users.length == 0) {
-        // пока нет сервера временно создадим юзеров
-        let usersData = [
-            {id:1,followed:true, photoUrl:'https://cdn0.iconfinder.com/data/icons/avatar-78/128/12-512.png',fullName: 'Dmitri', status:'I am a boss', location: {city:'Minsk',country:'Belarus'}},
-            {id:2,followed:false, photoUrl:'https://cdn0.iconfinder.com/data/icons/avatar-78/128/12-512.png',fullName: 'Dinya', status:'I am a boss two', location: {city:'Moscow',country:'Russia'}},
-            {id:3,followed:true, photoUrl:'https://cdn0.iconfinder.com/data/icons/avatar-78/128/12-512.png',fullName: 'Danya', status:'I am a boy', location: {city:'Kiev',country:'Ukraine'}}
-        ];
-
-        props.setUsers(usersData);
+    if (props.users.length === 0) {
+        // get запрос на адрес https://social-network.samuraijs.com/api/1.0/ хотим получить users
+        axios.get("https://social-network.samuraijs.com/api/1.0/users").then(response => {
+            // получаем ответ и записывам его
+            props.setUsers(response.data.items);
+        });
     }
 
     return (
         <div>
             {
-                props.users.map(user=> <div key={user.id}>
+                props.users.map(user => <div className="users" key={user.id}>
                     <div className="left-user">
                         <div className="left-user-img">
                             <img src={user.photoUrl} alt="avatar"/>

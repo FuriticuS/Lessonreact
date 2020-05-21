@@ -4,6 +4,7 @@ import Myposts from "./Myposts";
 // ------ import функции CONNECT для нашей компоненты
 import {connect} from "react-redux";
 
+
 // ------ import функции Action create, которые хранят тип для наших функций, из reducer
 import {addPostActionCreator, updatePostTextActionCreator} from "../../../redux/reducer/profilePage";
 
@@ -27,6 +28,6 @@ let mapDispatchToProps = (dispatch) => {
     }
 }
 
-const MypostsContainer = connect(mapStateToProps, mapDispatchToProps)(Myposts);
+const MypostsContainer = connect(mapStateToProps,mapDispatchToProps)(Myposts);
 
 export default MypostsContainer;

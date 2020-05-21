@@ -5,7 +5,7 @@ import './navigation.css';
 import Friends from "./friends/Friends";
 
 const Navigation = (props) => {
-    let userFriend = props.userItem.map( (friends) => <Friends logo = {friends.logo} name = {friends.name}/>);
+    let userFriend = props.userItem.map( (friends) => <Friends logo = {friends.logo} name = {friends.name} key={friends.id}/>);
 
     return(
         <nav className="navigation">
