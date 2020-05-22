@@ -5,12 +5,14 @@ import * as axios from "axios";
 
 let Users = (props) => {
 
-    if (props.users.length === 0) {
-        // get запрос на адрес https://social-network.samuraijs.com/api/1.0/ хотим получить users
-        axios.get("https://social-network.samuraijs.com/api/1.0/users").then(response => {
-            // получаем ответ и записывам его
-            props.setUsers(response.data.items);
-        });
+    let getUsers = () => {
+        if (props.users.length === 0) {
+            // get запрос на адрес https://social-network.samuraijs.com/api/1.0/ хотим получить users
+            axios.get("https://social-network.samuraijs.com/api/1.0/users").then(response => {
+                // получаем ответ и записывам его
+                props.setUsers(response.data.items);
+            });
+        }
     }
 
     return (
@@ -19,7 +21,8 @@ let Users = (props) => {
                 props.users.map(user => <div className="users" key={user.id}>
                     <div className="left-user">
                         <div className="left-user-img">
-                            <img src={user.photoUrl} alt="avatar"/>
+                        {/*если в запросе user.photos.small нет картинки (NULL) то захардкодим иконкой своей*/}
+                            <img src={user.photos.small != null ? user.photos.small : "https://image.flaticon.com/icons/png/512/17/17797.png"} alt="avatar"/>
                         </div>
 
                         <div className="left-user-button">
@@ -33,12 +36,12 @@ let Users = (props) => {
 
                     <div className="right-user">
                         <div className="right-user-name">
-                            <div className="right-user-name-user">{user.fullName}</div>
+                            <div className="right-user-name-user">{user.name}</div>
                             <div className="right-user-name-status">{user.status}</div>
                         </div>
                         <div className="right-user-city">
-                            <div className="right-user-city-country">{user.location.country}</div>
-                            <div className="right-user-city-city">{user.location.city}</div>
+                            <div className="right-user-city-country">{"user.location.country"}</div>
+                            <div className="right-user-city-city">{"user.location.city"}</div>
                         </div>
                     </div>
                 </div>)
