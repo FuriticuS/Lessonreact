@@ -17,6 +17,7 @@ let Users = (props) => {
 
     return (
         <div>
+            <button onClick={getUsers}>Загрузить пользователей</button>
             {
                 props.users.map(user => <div className="users" key={user.id}>
                     <div className="left-user">
