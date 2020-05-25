@@ -6,9 +6,14 @@ import * as axios from "axios";
 // создадим классовую компоненту
 class Users extends React.Component {
 
+    // можно не использовать тк ничего внутри не происходит кроме получения props
     constructor(props) {
         super(props);
+    }
 
+    // метод который вызовется только при открытии странички User
+    // вызов будет только после отрисовки компоненты User
+    componentDidMount() {
         // get запрос на адрес https://social-network.samuraijs.com/api/1.0/ хотим получить users
         axios.get("https://social-network.samuraijs.com/api/1.0/users").then(response => {
             // получаем ответ и записывам его
@@ -16,6 +21,7 @@ class Users extends React.Component {
         });
     }
 
+    // метод который возращает JSX (обязательно нужен в классовой компоненте)
     render() {
         return(
             <div>
