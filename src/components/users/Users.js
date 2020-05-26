@@ -15,7 +15,17 @@ class Users extends React.Component {
     // вызов будет только после отрисовки компоненты User
     componentDidMount() {
         // get запрос на адрес https://social-network.samuraijs.com/api/1.0/ хотим получить users
-        axios.get("https://social-network.samuraijs.com/api/1.0/users").then(response => {
+        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`).then(response => {
+            // получаем ответ и записывам его
+            this.props.setUsers(response.data.items);
+            this.props.setTotalUsersCount(response.data.totalCount);
+        });
+    }
+
+    onPageChanged = (pageNumber) => {
+        this.props.setCurrentPage(pageNumber);
+        // get запрос на адрес https://social-network.samuraijs.com/api/1.0/ хотим получить users
+        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${pageNumber}&count=${this.props.pageSize}`).then(response => {
             // получаем ответ и записывам его
             this.props.setUsers(response.data.items);
         });
@@ -23,10 +33,32 @@ class Users extends React.Component {
 
     // метод который возращает JSX (обязательно нужен в классовой компоненте)
     render() {
+        // высчитывает количество кнопочек(страниц), округляем их в большую сторону и отображаем
+        let pagesCount = Math.ceil(this.props.totalUsersCount / this.props.pageSize);
+        let pages = [];
+        for (let i = 1; i <= pagesCount; i++){
+            pages.push(i);
+        }
+
         return(
             <div>
+                {/*страницы для получения пользователей (с 1 по 54)*/}
+                <ul className="page-number">
+                    {pages.map(page => {
+                        return (
+                            <li
+                                className={this.props.currentPage === page && "selectedPage"}
+                                onClick={()=>{this.onPageChanged(page);}}>
+                                {page}
+                            </li>
+                        )
+                    })}
+                </ul>
+
+                {/*вывод полученных пользователей через axios*/}
                 {
                     this.props.users.map(user => <div className="users" key={user.id}>
+
                         <div className="left-user">
                             <div className="left-user-img">
                                 {/*если в запросе user.photos.small нет картинки (NULL) то захардкодим иконкой своей*/}
@@ -54,6 +86,7 @@ class Users extends React.Component {
                         </div>
                     </div>)
                 }
+
             </div>
         )
     }

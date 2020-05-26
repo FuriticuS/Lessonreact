@@ -48,3 +48,35 @@
     font-weight: bold;
     color: deeppink;
 }
+
+/*выбранные страницы*/
+.page-number {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100px;
+}
+
+.page-number li {
+    cursor: pointer;
+}
+
+.selectedPage {
+    font-weight: bold;
+    color: white;
+}
+
+/*страницы для пользователей*/
+.page-number {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+    width: 100%;
+}
+
+.page-number li{
+    margin: 5px;
+}

@@ -2,11 +2,15 @@
 const FOLLOW = 'FOLLOW';
 const UNFOLLOW = 'UNFOLLOW';
 const SET_USERS = 'SET_USERS';
+const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE';
+const SET_TOTAL_USERS_COUNT = 'SET_TOTAL_USERS_COUNT';
 
 //для нашего Redux зададим начальные значения
 let initialState = {
-    users:[
-    ]
+    users:[ ],
+    pageSize: 10,
+    totalUsersCount: 0,
+    currentPage: 1
 };
 
 const userPageReducer = (state = initialState, action) => {
@@ -44,12 +48,26 @@ const userPageReducer = (state = initialState, action) => {
             };
 
             //с сервера прийдут юзеры и будет их отрисовка
-        case SET_USERS:{
+        case SET_USERS:
             return {
                 ...state,
-                users: [...state.users, ...action.users]
+                users: action.users
             }
-        }
+
+        //действие для клика по кнопкам страниц номера
+        case SET_CURRENT_PAGE:
+            return {
+                ...state,
+                currentPage: action.currentPage //выбираем ту страницу по которой кликнули
+            }
+
+
+        case SET_TOTAL_USERS_COUNT:
+            return {
+                ...state,
+                totalUsersCount: action.count
+            }
+
 
         default :
             return state;
@@ -74,6 +92,20 @@ export const setUserAC = (users) => {
     return {
         type: SET_USERS,
         users
+    }
+}
+// --- получаем текущую страницу на которой мы и какая активна
+export const setCurrentPageAC = (currentPage) => {
+    return {
+        type: SET_CURRENT_PAGE,
+        currentPage: currentPage
+    }
+}
+// --- установить общее количество пользователей
+export const setTotalUsersCountAC = (totalUsersCount) => {
+    return {
+        type: SET_TOTAL_USERS_COUNT,
+        count: totalUsersCount
     }
 }
 
