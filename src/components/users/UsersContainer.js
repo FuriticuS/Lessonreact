@@ -1,10 +1,59 @@
 import React from "react";
+import * as axios from "axios";
 import Users from "./Users";
 
 import {connect} from "react-redux";
 
 import {followAC, unFollowAC, setUserAC, setCurrentPageAC, setTotalUsersCountAC} from "../../redux/reducer/userPage";
 
+//------------------------------------------container 2-----------------------------------------------------//
+// создадим классовую компоненту
+class UsersAPIComponent extends React.Component {
+
+    // можно не использовать тк ничего внутри не происходит кроме получения props
+    constructor(props) {
+        super(props);
+    }
+
+    // метод который вызовется только при открытии странички User
+    // вызов будет только после отрисовки компоненты User
+    componentDidMount() {
+        // get запрос на адрес https://social-network.samuraijs.com/api/1.0/ хотим получить users
+        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`).then(response => {
+            // получаем ответ и записывам его
+            this.props.setUsers(response.data.items);
+            this.props.setTotalUsersCount(response.data.totalCount);
+        });
+    }
+
+    onPageChanged = (pageNumber) => {
+        this.props.setCurrentPage(pageNumber);
+        // get запрос на адрес https://social-network.samuraijs.com/api/1.0/ хотим получить users
+        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${pageNumber}&count=${this.props.pageSize}`).then(response => {
+            // получаем ответ и записывам его
+            this.props.setUsers(response.data.items);
+        });
+    }
+
+    // метод который возращает JSX (обязательно нужен в классовой компоненте)
+    render() {
+        return(
+            <Users
+                totalUsersCount = {this.props.totalUsersCount}
+                pageSize = {this.props.pageSize}
+                currentPage = {this.props.currentPage}
+                users={this.props.users}
+                follow={this.props.follow}
+                unfollow={this.props.unfollow}
+
+                onPageChanged={this.onPageChanged}
+            />
+        )
+    }
+}
+
+
+//------------------------------------------container 1-----------------------------------------------------//
 //-- принимает весь State целиком уже с redux через redux-store и хранит данные для страницы user с props = user
 let mapStateToProps = (state) => {
     return {
@@ -35,4 +84,4 @@ let mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(Users);
+export default connect(mapStateToProps,mapDispatchToProps)(UsersAPIComponent);
