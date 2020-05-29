@@ -7,11 +7,11 @@ import MypostsContainer from "./Myposts/MypostsContainer";
 import Info from "./info/Info";
 
 
-const Profile = () => {
+const Profile = (props) => {
   return (
       <div className="profile">
 
-          <Info />
+          <Info profile={props.profile}/>
 
           <MypostsContainer />
 

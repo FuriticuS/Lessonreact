@@ -1,6 +1,8 @@
 // ------ action type сделаем переменные для все type в наших функциях
 const ADD_POST = 'ADD-POST';
 const UPDATE_POST_TEXT = 'UPDATE-POST-TEXT';
+// сетаем для страницы профайл наши данные юзера -> потом export по нашему типу
+const SET_USER_PROFILE = 'SET_USER_PROFILE';
 
 //для нашего Redux зададим начальные значения
 let initialState = {
@@ -11,7 +13,9 @@ let initialState = {
         {id: 4, post: 'быть для высокой конверсии', likes: 5},
         {id: 5, post: 'В странах СНГ ситуация', likes: 8}
     ],
-    newPostText: 'Введите сообщение для страницы Profile'
+    newPostText: 'Введите сообщение для страницы Profile',
+    // сначала наш стейт с profile: null (без изменений)
+    profile: null
 };
 
 const profilePageReducer = (state = initialState, action) => {
@@ -41,6 +45,13 @@ const profilePageReducer = (state = initialState, action) => {
                 newPostText: action.newText
             }
 
+        // отрисовываем наш стейт со всеми изменениями -> изначально создаем переменную profile: null в initialState
+        case SET_USER_PROFILE:
+            return {
+                ...state,
+                profile: action.profile
+            }
+
         default :
             return state;
 
@@ -59,6 +70,14 @@ export const updatePostTextActionCreator = (text) => {
     return {
         type:UPDATE_POST_TEXT,
         newText: text
+    }
+}
+
+// export по нашему типу чтобы получить все данные c user -> добавляем в case
+export const setUserProfile = (profile) => {
+    return {
+        type: SET_USER_PROFILE,
+        profile: profile
     }
 }
 

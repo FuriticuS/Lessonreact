@@ -16,18 +16,11 @@ let mapStateToProps = (State) => {
         newPostText: State.profilePage.newPostText
     }
 }
-// -- функции с call-back
-let mapDispatchToProps = (dispatch) => {
-      return {
-        addPost: () => {
-            dispatch(addPostActionCreator());
-        },
-        updatePostText: (words)=> {
-            dispatch(updatePostTextActionCreator(words));
-        }
-    }
-}
 
-const MypostsContainer = connect(mapStateToProps,mapDispatchToProps)(Myposts);
+//-- закинем вторым параметром ссылки на нужные dispatch action create бывший mapDispatchToProps
+const MypostsContainer = connect(mapStateToProps,{
+    addPost: addPostActionCreator,
+    updatePostText: updatePostTextActionCreator
+})(Myposts);
 
 export default MypostsContainer;

@@ -1,6 +1,7 @@
 import React from "react";
 
 import './user.css';
+import {NavLink} from "react-router-dom";
 
 const Users = (props) => {
     // высчитывает количество кнопочек(страниц), округляем их в большую сторону и отображаем
@@ -31,8 +32,10 @@ const Users = (props) => {
 
                     <div className="left-user">
                         <div className="left-user-img">
-                            {/*если в запросе user.photos.small нет картинки (NULL) то захардкодим иконкой своей*/}
-                            <img src={user.photos.small != null ? user.photos.small : "https://image.flaticon.com/icons/png/512/17/17797.png"} alt="avatar"/>
+                            <NavLink to={'/profile/'+user.id}>
+                                {/*если в запросе user.photos.small нет картинки (NULL) то захардкодим иконкой своей*/}
+                                <img src={user.photos.small != null ? user.photos.small : "https://image.flaticon.com/icons/png/512/17/17797.png"} alt="avatar"/>
+                            </NavLink>
                         </div>
 
                         <div className="left-user-button">

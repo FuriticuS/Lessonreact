@@ -89,28 +89,12 @@ let mapStateToProps = (state) => {
         isFetching: state.usersPage.isFetching
     }
 }
-//-- служит для того чтобы передавать call-back для компоненты User (функции которые компонента может вызывать)
-let mapDispatchToProps = (dispatch) => {
-    return {
-        follow: (userId) => {
-            dispatch(followAC(userId));
-        },
-        unfollow: (userId) => {
-            dispatch(unFollowAC(userId));
-        },
-        setUsers: (user) => {
-            dispatch(setUserAC(user));
-        },
-        setCurrentPage: (pageNumber) => {
-            dispatch(setCurrentPageAC(pageNumber));
-        },
-        setTotalUsersCount: (totalCount) => {
-            dispatch(setTotalUsersCountAC(totalCount));
-        },
-        toggleIsFetching: (isFetching) => {
-            dispatch(toggleIsFetchingAC(isFetching));
-        }
-    }
-}
 
-export default connect(mapStateToProps,mapDispatchToProps)(UsersAPIComponent);
+//-- закинем вторым параметром ссылки на нужные action create в файле userPage
+export default connect(mapStateToProps,{
+    follow:followAC,
+    unfollow:unFollowAC,
+    setUsers:setUserAC,
+    setCurrentPage: setCurrentPageAC,
+    setTotalUsersCount: setTotalUsersCountAC,
+    toggleIsFetching: toggleIsFetchingAC})(UsersAPIComponent);

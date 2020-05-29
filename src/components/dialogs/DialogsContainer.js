@@ -15,19 +15,11 @@ let mapStateToProp = (State)=> {
         newMessagesText: State.dialogsPage.newMessagesText
     }
 }
-// -- функции с call-back
-let mapDispatchToProps = (dispatch)=> {
-    return {
-        addNewMessage: () => {
-            dispatch(addNewMessageActionCreator());
-        },
-        updateMessageText: (text)=> {
-            dispatch(updateMessageTextActionCreator(text));
-        }
-    }
-}
 
-// ------ в первых скобках = настройках компоненты , во вторых скобках для какой компоненты
-const DialogsContainer = connect(mapStateToProp, mapDispatchToProps) (Dialogs);
+//-- закинем вторым параметром ссылки на нужные dispatch action create бывший mapDispatchToProps
+const DialogsContainer = connect(mapStateToProp, {
+    addNewMessage: addNewMessageActionCreator,
+    updateMessageText: updateMessageTextActionCreator
+}) (Dialogs);
 
 export default DialogsContainer;
