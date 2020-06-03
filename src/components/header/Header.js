@@ -1,11 +1,23 @@
 import React from "react";
+import {NavLink} from "react-router-dom";
 
 import './header.css';
 
-const Header = () => {
+
+const Header = (props) => {
     return(
         <header className="header">
-            <img src="https://s2.logaster.com/static/v3/img/products/logo.png" alt="logo"/>
+            {/*ссылка на главную*/}
+            <NavLink to={'/'}><img src="https://s2.logaster.com/static/v3/img/products/logo.png" alt="logo"/></NavLink>
+
+            {/*блок регистрации*/}
+            <div className="loginBlock">
+                {
+                    // если мы авторизованы то покажем одно если нет то другое
+                    props.isAuth ? <div>Пользователь залогинен и его логин = {props.login}</div> : <NavLink to={'/login'}>Login</NavLink>
+                }
+
+            </div>
         </header>
     );
 };
