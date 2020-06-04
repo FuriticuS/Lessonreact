@@ -15,6 +15,7 @@ import {
 
 import Preloader from "../preloader/Preloader";
 import preloader from "./img/loader.gif";
+import {getPages, getUsers} from "../../api/api";
 
 //------------------------------------------container 2-----------------------------------------------------//
 // создадим классовую компоненту
@@ -30,8 +31,8 @@ class UsersAPIComponent extends React.Component {
     componentDidMount() {
         //--- отображение preloader перед началом запроса
         this.props.toggleIsFetching(true);
-        // get запрос на адрес https://social-network.samuraijs.com/api/1.0/ хотим получить users
-        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`, {withCredentials: true}).then(response => {
+        // get запрос из папки api для получения кол-ва страниц
+        getPages(this.props.currentPage, this.props.pageSize).then(response => {
             //--- конец отображения preloader после запроса
             this.props.toggleIsFetching(false);
             // получаем ответ и записывам его
@@ -47,8 +48,8 @@ class UsersAPIComponent extends React.Component {
         //--- отображение preloader перед началом запроса
         this.props.toggleIsFetching(true);
 
-        // get запрос на адрес https://social-network.samuraijs.com/api/1.0/ хотим получить users
-        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${pageNumber}&count=${this.props.pageSize}`, {withCredentials: true}).then(response => {
+        // get запрос из папки api для получения всех users
+        getUsers(pageNumber, this.props.pageSize).then(response => {
             //--- конец отображения preloader после запроса
             this.props.toggleIsFetching(false);
             // получаем ответ и записывам его
