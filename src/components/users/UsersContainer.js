@@ -31,7 +31,7 @@ class UsersAPIComponent extends React.Component {
         //--- отображение preloader перед началом запроса
         this.props.toggleIsFetching(true);
         // get запрос на адрес https://social-network.samuraijs.com/api/1.0/ хотим получить users
-        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`).then(response => {
+        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`, {withCredentials: true}).then(response => {
             //--- конец отображения preloader после запроса
             this.props.toggleIsFetching(false);
             // получаем ответ и записывам его
@@ -40,6 +40,7 @@ class UsersAPIComponent extends React.Component {
         });
     }
 
+    // получаем новые странички
     onPageChanged = (pageNumber) => {
         this.props.setCurrentPage(pageNumber);
 
@@ -47,7 +48,7 @@ class UsersAPIComponent extends React.Component {
         this.props.toggleIsFetching(true);
 
         // get запрос на адрес https://social-network.samuraijs.com/api/1.0/ хотим получить users
-        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${pageNumber}&count=${this.props.pageSize}`).then(response => {
+        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${pageNumber}&count=${this.props.pageSize}`, {withCredentials: true}).then(response => {
             //--- конец отображения preloader после запроса
             this.props.toggleIsFetching(false);
             // получаем ответ и записывам его
