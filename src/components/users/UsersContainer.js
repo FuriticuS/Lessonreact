@@ -10,7 +10,7 @@ import {
     setUserAC,
     setCurrentPageAC,
     setTotalUsersCountAC,
-    toggleIsFetchingAC
+    toggleIsFetchingAC, toggleFollowingProgress
 } from "../../redux/reducer/userPage";
 
 import Preloader from "../preloader/Preloader";
@@ -32,12 +32,12 @@ class UsersAPIComponent extends React.Component {
         //--- отображение preloader перед началом запроса
         this.props.toggleIsFetching(true);
         // get запрос из папки api для получения кол-ва страниц
-        getPages(this.props.currentPage, this.props.pageSize).then(response => {
+        getPages(this.props.currentPage, this.props.pageSize).then(data => {
             //--- конец отображения preloader после запроса
             this.props.toggleIsFetching(false);
             // получаем ответ и записывам его
-            this.props.setUsers(response.data.items);
-            this.props.setTotalUsersCount(response.data.totalCount);
+            this.props.setUsers(data.items);
+            this.props.setTotalUsersCount(data.totalCount);
         });
     }
 
@@ -49,11 +49,11 @@ class UsersAPIComponent extends React.Component {
         this.props.toggleIsFetching(true);
 
         // get запрос из папки api для получения всех users
-        getUsers(pageNumber, this.props.pageSize).then(response => {
+        getUsers(pageNumber, this.props.pageSize).then(data => {
             //--- конец отображения preloader после запроса
             this.props.toggleIsFetching(false);
             // получаем ответ и записывам его
-            this.props.setUsers(response.data.items);
+            this.props.setUsers(data.items);
         });
     }
 
@@ -71,6 +71,8 @@ class UsersAPIComponent extends React.Component {
                     users={this.props.users}
                     follow={this.props.follow}
                     unfollow={this.props.unfollow}
+                    toggleFollowingProgress={this.props.toggleFollowingProgress}
+                    followingInProcess={this.props.followingInProcess}
 
                     onPageChanged={this.onPageChanged}
                 />
@@ -88,7 +90,8 @@ let mapStateToProps = (state) => {
         pageSize: state.usersPage.pageSize,
         totalUsersCount: state.usersPage.totalUsersCount,
         currentPage: state.usersPage.currentPage,
-        isFetching: state.usersPage.isFetching
+        isFetching: state.usersPage.isFetching,
+        followingInProcess: state.usersPage.followingInProcess
     }
 }
 
@@ -99,4 +102,5 @@ export default connect(mapStateToProps,{
     setUsers:setUserAC,
     setCurrentPage: setCurrentPageAC,
     setTotalUsersCount: setTotalUsersCountAC,
-    toggleIsFetching: toggleIsFetchingAC})(UsersAPIComponent);
+    toggleIsFetching: toggleIsFetchingAC,
+    toggleFollowingProgress:toggleFollowingProgress})(UsersAPIComponent);

@@ -42,7 +42,9 @@ const Users = (props) => {
                         <div className="left-user-button">
                             {/*если user follow то покажем одну кнопку если нет то другую*/}
                             {user.followed
-                                ? <button onClick={()=>{
+                                ? <button disabled={props.followingInProcess.some(id => id === user.id)} onClick={()=>{
+                                    // loader для ожидания follow
+                                    props.toggleFollowingProgress(true, user.id);
                                     // запрос на отписку
                                     axios.delete(`https://social-network.samuraijs.com/api/1.0/follow/${user.id}`,
                                         {withCredentials: true, headers:{'API-KEY':'614a97b4-e7f5-4aa7-8483-5a00861c0bf2'}})
@@ -51,8 +53,13 @@ const Users = (props) => {
                                             if (response.data.resultCode === 0) {
                                                 props.unfollow(user.id);
                                             }
+                                            // loader после окончания ожидания unfollow
+                                            props.toggleFollowingProgress(false, user.id);
                                     });}}>Unfollow</button>
-                                : <button onClick={()=>{
+                                : <button disabled={props.followingInProcess.some(id => id === user.id)} onClick={()=>{
+                                    // loader для ожидания follow
+                                    props.toggleFollowingProgress(true, user.id);
+
                                     // запрос на подписку
                                     axios.post(`https://social-network.samuraijs.com/api/1.0/follow/${user.id}`,
                                         {},
@@ -62,6 +69,8 @@ const Users = (props) => {
                                             if (response.data.resultCode === 0) {
                                                 props.follow(user.id);
                                             }
+                                            // loader после окончания ожидания unfollow
+                                            props.toggleFollowingProgress(false, user.id);
                                         });}}>Follow</button>
                             }
                         </div>
