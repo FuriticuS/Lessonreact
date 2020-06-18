@@ -1,10 +1,8 @@
 import React from "react";
 import Profile from "./Profile";
-import * as axios from "axios";
-import profilePageReducer, {setUserProfile} from "../../redux/reducer/profilePage";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
-import Preloader from "../preloader/Preloader";
+import {authUser} from "../../redux/reducer/profilePage";
 
 class ProfileContainer extends React.Component {
 
@@ -24,11 +22,7 @@ class ProfileContainer extends React.Component {
             userID = 2;
         }
 
-        // get запрос на адрес https://social-network.samuraijs.com/api/1.0/ хотим получить users
-        axios.get(`https://social-network.samuraijs.com/api/1.0/profile/` + userID).then(response => {
-            // получаем ответ и записывам весь файл с API со всеми данными
-            this.props.setUserProfile(response.data);
-        });
+        this.props.authUser(userID);
     }
 
     render() {
@@ -56,4 +50,4 @@ let WithUrlDataContainerComponent = withRouter(ProfileContainer);
 
 // создаем наши коннекты по переменным и редьюсеры и передаем их в profile
 // connect сам сделает вызов с переменными и сделает автоматически dispatch
-export default connect(mapStateToProps, {setUserProfile:setUserProfile}) (WithUrlDataContainerComponent);
+export default connect(mapStateToProps, {authUser}) (WithUrlDataContainerComponent);

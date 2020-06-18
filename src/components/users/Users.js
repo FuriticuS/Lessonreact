@@ -2,13 +2,13 @@ import React from "react";
 
 import './user.css';
 import {NavLink} from "react-router-dom";
-import * as axios from "axios";
+import {follow, unfollow} from "../../redux/reducer/userPage";
 
 const Users = (props) => {
     // высчитывает количество кнопочек(страниц), округляем их в большую сторону и отображаем
     let pagesCount = Math.ceil(props.totalUsersCount / props.pageSize);
     let pages = [];
-    for (let i = 1; i <= pagesCount; i++){
+    for (let i = 1; i <= pagesCount; i++) {
         pages.push(i);
     }
 
@@ -20,7 +20,9 @@ const Users = (props) => {
                     return (
                         <li
                             className={props.currentPage === page && "selectedPage"}
-                            onClick={()=>{props.onPageChanged(page);}}>
+                            onClick={() => {
+                                props.onPageChanged(page);
+                            }}>
                             {page}
                         </li>
                     )
@@ -28,50 +30,25 @@ const Users = (props) => {
             </ul>
 
             {/*вывод полученных пользователей через axios*/}
-            {
-                props.users.map(user => <div className="users" key={user.id}>
+            {props.users.map(user => <div className="users" key={user.id}>
 
                     <div className="left-user">
                         <div className="left-user-img">
-                            <NavLink to={'/profile/'+user.id}>
+                            <NavLink to={'/profile/' + user.id}>
                                 {/*если в запросе user.photos.small нет картинки (NULL) то захардкодим иконкой своей*/}
-                                <img src={user.photos.small != null ? user.photos.small : "https://image.flaticon.com/icons/png/512/17/17797.png"} alt="avatar"/>
+                                <img
+                                    src={user.photos.small != null ? user.photos.small : "https://image.flaticon.com/icons/png/512/17/17797.png"}
+                                    alt="avatar"/>
                             </NavLink>
                         </div>
 
                         <div className="left-user-button">
                             {/*если user follow то покажем одну кнопку если нет то другую*/}
                             {user.followed
-                                ? <button disabled={props.followingInProcess.some(id => id === user.id)} onClick={()=>{
-                                    // loader для ожидания follow
-                                    props.toggleFollowingProgress(true, user.id);
-                                    // запрос на отписку
-                                    axios.delete(`https://social-network.samuraijs.com/api/1.0/follow/${user.id}`,
-                                        {withCredentials: true, headers:{'API-KEY':'614a97b4-e7f5-4aa7-8483-5a00861c0bf2'}})
-                                        .then(response => {
-                                            // удачный ответ после запроса === 0
-                                            if (response.data.resultCode === 0) {
-                                                props.unfollow(user.id);
-                                            }
-                                            // loader после окончания ожидания unfollow
-                                            props.toggleFollowingProgress(false, user.id);
-                                    });}}>Unfollow</button>
-                                : <button disabled={props.followingInProcess.some(id => id === user.id)} onClick={()=>{
-                                    // loader для ожидания follow
-                                    props.toggleFollowingProgress(true, user.id);
-
-                                    // запрос на подписку
-                                    axios.post(`https://social-network.samuraijs.com/api/1.0/follow/${user.id}`,
-                                        {},
-                                        {withCredentials: true, headers:{'API-KEY':'614a97b4-e7f5-4aa7-8483-5a00861c0bf2'}})
-                                        .then(response => {
-                                            // удачный ответ после запроса === 0
-                                            if (response.data.resultCode === 0) {
-                                                props.follow(user.id);
-                                            }
-                                            // loader после окончания ожидания unfollow
-                                            props.toggleFollowingProgress(false, user.id);
-                                        });}}>Follow</button>
+                                ?
+                                <button disabled={props.followingInProcess.some(id => id === user.id)} onClick={() => {props.unfollow(user.id)}}>Unfollow</button>
+                                :
+                                <button disabled={props.followingInProcess.some(id => id === user.id)} onClick={() => {props.follow(user.id)}}>Follow</button>
                             }
                         </div>
                     </div>

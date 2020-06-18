@@ -1,4 +1,8 @@
 // ------ action type сделаем переменные для все type в наших функциях
+import * as api from "../../api/api";
+import {setUserAC} from "./userPage";
+import {getProfile} from "../../api/api";
+
 const ADD_POST = 'ADD-POST';
 const UPDATE_POST_TEXT = 'UPDATE-POST-TEXT';
 // сетаем для страницы профайл наши данные юзера -> потом export по нашему типу
@@ -78,6 +82,17 @@ export const setUserProfile = (profile) => {
     return {
         type: SET_USER_PROFILE,
         profile: profile
+    }
+}
+
+// thunk export по нашему типу чтобы получить все данные c user -> добавляем в case
+export const authUser = (userID) => {
+    return (dispatch) => {
+        // get запрос на адрес https://social-network.samuraijs.com/api/1.0/ хотим получить users
+        getProfile(userID).then(response => {
+            // получаем ответ и записывам весь файл с API со всеми данными
+            dispatch(setUserProfile(response.data));
+        });
     }
 }
 

@@ -1,5 +1,4 @@
 import React from "react";
-import * as axios from "axios";
 import Users from "./Users";
 
 import {connect} from "react-redux";
@@ -7,15 +6,13 @@ import {connect} from "react-redux";
 import {
     followAC,
     unFollowAC,
-    setUserAC,
     setCurrentPageAC,
-    setTotalUsersCountAC,
-    toggleIsFetchingAC, toggleFollowingProgress
+    toggleFollowingProgress,
+    getPagesThunkCreator,
+    getUsersThunkCreator
 } from "../../redux/reducer/userPage";
 
 import Preloader from "../preloader/Preloader";
-import preloader from "./img/loader.gif";
-import {getPages, getUsers} from "../../api/api";
 
 //------------------------------------------container 2-----------------------------------------------------//
 // создадим классовую компоненту
@@ -29,32 +26,14 @@ class UsersAPIComponent extends React.Component {
     // метод который вызовется только при открытии странички User
     // вызов будет только после отрисовки компоненты User
     componentDidMount() {
-        //--- отображение preloader перед началом запроса
-        this.props.toggleIsFetching(true);
-        // get запрос из папки api для получения кол-ва страниц
-        getPages(this.props.currentPage, this.props.pageSize).then(data => {
-            //--- конец отображения preloader после запроса
-            this.props.toggleIsFetching(false);
-            // получаем ответ и записывам его
-            this.props.setUsers(data.items);
-            this.props.setTotalUsersCount(data.totalCount);
-        });
+        //--- вызов всех диспачей с функции connect(внизу)
+        this.props.getPages(this.props.currentPage, this.props.pageSize);
     }
 
     // получаем новые странички
     onPageChanged = (pageNumber) => {
-        this.props.setCurrentPage(pageNumber);
-
-        //--- отображение preloader перед началом запроса
-        this.props.toggleIsFetching(true);
-
-        // get запрос из папки api для получения всех users
-        getUsers(pageNumber, this.props.pageSize).then(data => {
-            //--- конец отображения preloader после запроса
-            this.props.toggleIsFetching(false);
-            // получаем ответ и записывам его
-            this.props.setUsers(data.items);
-        });
+        //--- вызов всех диспачей с функции connect(внизу)
+        this.props.getUsers(pageNumber, this.props.pageSize);
     }
 
     // метод который возращает JSX (обязательно нужен в классовой компоненте)
@@ -71,7 +50,6 @@ class UsersAPIComponent extends React.Component {
                     users={this.props.users}
                     follow={this.props.follow}
                     unfollow={this.props.unfollow}
-                    toggleFollowingProgress={this.props.toggleFollowingProgress}
                     followingInProcess={this.props.followingInProcess}
 
                     onPageChanged={this.onPageChanged}
@@ -95,12 +73,11 @@ let mapStateToProps = (state) => {
     }
 }
 
-//-- закинем вторым параметром ссылки на нужные action create в файле userPage
+//-- закинем вторым параметром ссылки на нужные action create из файла userPage
 export default connect(mapStateToProps,{
     follow:followAC,
     unfollow:unFollowAC,
-    setUsers:setUserAC,
     setCurrentPage: setCurrentPageAC,
-    setTotalUsersCount: setTotalUsersCountAC,
-    toggleIsFetching: toggleIsFetchingAC,
-    toggleFollowingProgress:toggleFollowingProgress})(UsersAPIComponent);
+    toggleFollowingProgress:toggleFollowingProgress,
+    getPages:getPagesThunkCreator,
+    getUsers: getUsersThunkCreator})(UsersAPIComponent);

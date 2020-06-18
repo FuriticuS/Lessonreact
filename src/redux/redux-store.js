@@ -1,4 +1,4 @@
-import {combineReducers, createStore} from "redux";
+import {applyMiddleware, combineReducers, createStore} from "redux";
 
 //reducer
 import profilePageReducer from "./reducer/profilePage";
@@ -6,6 +6,9 @@ import dialogsPageReducer from "./reducer/dialogsPage";
 import sidebarReducer from "./reducer/sidebar";
 import userPageReducer from "./reducer/userPage";
 import authReducer from "./reducer/auth-reducer";
+
+//импорт thunk после установки пакета
+import thunkMiddleware from "redux-thunk";
 
 // объеденим наши созданные reducer в один
 let reducers = combineReducers({
@@ -16,7 +19,8 @@ let reducers = combineReducers({
     auth: authReducer
 });
 
-let Store = createStore(reducers);
+// где applyMiddleware промежуточные слои для диспатчей
+let Store = createStore(reducers, applyMiddleware(thunkMiddleware));
 
 window.store = Store;
 

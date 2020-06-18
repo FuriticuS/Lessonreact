@@ -1,4 +1,7 @@
 // ------ action type сделаем переменные для все type в наших функциях
+import {getPages, getUsers} from "../../api/api";
+import * as api from "../../api/api";
+
 const FOLLOW = 'FOLLOW';
 const UNFOLLOW = 'UNFOLLOW';
 const SET_USERS = 'SET_USERS';
@@ -102,6 +105,7 @@ export const followAC = (userId) => {
         userId
     }
 }
+
 export const unFollowAC = (userId) => {
     return {
         type:FOLLOW,
@@ -130,18 +134,89 @@ export const setTotalUsersCountAC = (totalUsersCount) => {
     }
 }
 //--- preloader для страницы users
-export const  toggleIsFetchingAC = (isFetching) => {
+export const toggleIsFetchingAC = (isFetching) => {
     return {
         type: TOGGLE_IS_FETCHING,
         isFetching: isFetching
     }
 }
 //--- loader для follow на странице users
-export const  toggleFollowingProgress = (followingInProcess, userId) => {
+export const toggleFollowingProgress = (followingInProcess, userId) => {
     return {
         type: TOGGLE_IS_FOLLOWING_PROGRESS,
         followingInProcess: followingInProcess,
         userId: userId
+    }
+}
+
+//-------------------------------------------------thunk for UserContainer.js
+export const getPagesThunkCreator = (currentPage,pageSize) => {
+    return (dispath) => {
+        //--- задиспачим отображение preloader перед началом запроса
+        dispath(toggleIsFetchingAC(true));
+        // get запрос из папки api для получения кол-ва страниц
+        getPages(currentPage, pageSize).then(data => {
+            //--- задиспачим конец отображения preloader после запроса
+            dispath(toggleIsFetchingAC(false));
+            // получаем ответ и записывам его
+            dispath(setUserAC(data.items));
+            dispath(setTotalUsersCountAC(data.totalCount));
+        });
+    }
+}
+
+//-------------------------------------------------thunk for UserContainer.js
+export const getUsersThunkCreator = (pageNumber, pageSize) => {
+    return (dispatch) => {
+
+        dispatch(setCurrentPageAC(pageNumber));
+
+        //--- отображение preloader перед началом запроса
+        dispatch(toggleIsFetchingAC(true));
+
+        // get запрос из папки api для получения всех users
+        getUsers(pageNumber, pageSize).then(data => {
+            //--- конец отображения preloader после запроса
+            dispatch(toggleIsFetchingAC(false));
+            // получаем ответ и записывам его
+            dispatch(setUserAC(data.items));
+        });
+
+    }
+}
+
+//-------------------------------------------------thunk for User.js
+export const follow = (userId) => {
+    return (dispatch) => {
+        // loader для ожидания follow
+        dispatch(toggleFollowingProgress(true, userId));
+
+        // запрос на подписку
+        api.postFollow(userId).then(response => {
+            // удачный ответ после запроса === 0
+            if (response.data.resultCode === 0) {
+                dispatch(followAC(userId));
+            }
+            // loader после окончания ожидания unfollow
+            dispatch(toggleFollowingProgress(false, userId));
+        });
+    }
+}
+
+//-------------------------------------------------thunk for User.js
+export const unfollow = (userId) => {
+    return (dispatch) => {
+        // loader для ожидания follow
+        dispatch(toggleFollowingProgress(true, userId));
+        // запрос на отписку
+        api.delUnfollow(userId).then(response => {
+            // удачный ответ после запроса === 0
+            if (response.data.resultCode === 0) {
+                dispatch(unFollowAC(userId));
+            }
+            // loader после окончания ожидания unfollow
+            dispatch(toggleFollowingProgress(false, userId));
+        });
     }
 }
 
