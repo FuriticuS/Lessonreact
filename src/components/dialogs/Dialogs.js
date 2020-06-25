@@ -4,6 +4,7 @@ import './dialogs.css';
 
 import DialogItem from "./dialog-item/DialogItem";
 import Message from "./message/Message";
+import {Redirect} from "react-router-dom";
 
 const Dialogs = (props) => {
 
@@ -42,6 +43,9 @@ const Dialogs = (props) => {
     let onClickTextareaa = () => {
         addNewMessage.current.value = '';
     }
+
+    //------------------------------ функция Redirect если пользователь незалогинен
+    if (props.isAuth === false) return <Redirect to={'/login'}/>;
 
     return (
         <div className="dialogs">

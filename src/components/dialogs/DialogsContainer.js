@@ -12,7 +12,8 @@ import {addNewMessageActionCreator, updateMessageTextActionCreator} from "../../
 let mapStateToProp = (State)=> {
     return {
         dialogsPage: State.dialogsPage,
-        newMessagesText: State.dialogsPage.newMessagesText
+        newMessagesText: State.dialogsPage.newMessagesText,
+        isAuth: State.auth.isAuth,
     }
 }
 
