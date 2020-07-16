@@ -3,6 +3,8 @@ import Profile from "./Profile";
 import {connect} from "react-redux";
 import {Redirect, withRouter} from "react-router-dom";
 import {authUser} from "../../redux/reducer/profilePage";
+import {WithAuthRedirect} from "../hoc/WithAuthRedirect";
+import Dialogs from "../dialogs/Dialogs";
 
 class ProfileContainer extends React.Component {
 
@@ -26,8 +28,6 @@ class ProfileContainer extends React.Component {
     }
 
     render() {
-        //------------------------------ функция Redirect если пользователь незалогинен
-        if (this.props.isAuth === false) return <Redirect to={'/login'}/>;
 
         return (
             <div>
@@ -39,18 +39,21 @@ class ProfileContainer extends React.Component {
     }
 };
 
+// компонент вида HOC - high order component который делает проверку логина
+let AuthRedirectComponent = WithAuthRedirect(ProfileContainer);
+
+
 // пропсы для страницы Profile
 let mapStateToProps = (state) => {
     return {
-        profile: state.profilePage.profile,
-        isAuth: state.auth.isAuth,
+        profile: state.profilePage.profile
     }
 }
 
 // перед выводом компоненты ProfileContainer мы еще раз ее прогоним через новый Container
 // для работы с URLом компоненты (чтобы записать данные с URL)
 // и получилась НОВАЯ компонента ProfileContainer
-let WithUrlDataContainerComponent = withRouter(ProfileContainer);
+let WithUrlDataContainerComponent = withRouter(AuthRedirectComponent);
 
 // создаем наши коннекты по переменным и редьюсеры и передаем их в profile
 // connect сам сделает вызов с переменными и сделает автоматически dispatch

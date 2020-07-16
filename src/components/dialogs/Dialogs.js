@@ -1,13 +1,10 @@
 import React from "react";
+import DialogItem from "./dialog-item/DialogItem";
+import Message from "./message/Message";
 
 import './dialogs.css';
 
-import DialogItem from "./dialog-item/DialogItem";
-import Message from "./message/Message";
-import {Redirect} from "react-router-dom";
-
 const Dialogs = (props) => {
-
     let dialogElements = props.dialogsPage.dialogsData.map( (dialog) =>
         <DialogItem
             id={dialog.id}
@@ -43,9 +40,6 @@ const Dialogs = (props) => {
     let onClickTextareaa = () => {
         addNewMessage.current.value = '';
     }
-
-    //------------------------------ функция Redirect если пользователь незалогинен
-    if (props.isAuth === false) return <Redirect to={'/login'}/>;
 
     return (
         <div className="dialogs">
