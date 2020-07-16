@@ -1,10 +1,10 @@
 import React from "react";
 import Profile from "./Profile";
 import {connect} from "react-redux";
-import {Redirect, withRouter} from "react-router-dom";
+import {withRouter} from "react-router-dom";
 import {authUser} from "../../redux/reducer/profilePage";
 import {WithAuthRedirect} from "../hoc/WithAuthRedirect";
-import Dialogs from "../dialogs/Dialogs";
+import {compose} from "redux";
 
 class ProfileContainer extends React.Component {
 
@@ -39,10 +39,6 @@ class ProfileContainer extends React.Component {
     }
 };
 
-// компонент вида HOC - high order component который делает проверку логина
-let AuthRedirectComponent = WithAuthRedirect(ProfileContainer);
-
-
 // пропсы для страницы Profile
 let mapStateToProps = (state) => {
     return {
@@ -50,11 +46,27 @@ let mapStateToProps = (state) => {
     }
 }
 
-// перед выводом компоненты ProfileContainer мы еще раз ее прогоним через новый Container
+//Это утилита из Redux для удобства вывода нескольких функций подряд
+// ProfileContainer -> WithAuthRedirect -> withRouter -> connect
+let ProfileContainerCompose = compose(
+    connect(mapStateToProps, {authUser}),
+    withRouter,
+    WithAuthRedirect
+)(ProfileContainer);
+
+// компонент вида HOC - high order component который делает проверку логина
+//let AuthRedirectComponent = WithAuthRedirect(ProfileContainer);
+
+
+
+
+// перед выводом компоненты ProfileContainer мы еще раз ее прогоним через новый Container - старая запись
 // для работы с URLом компоненты (чтобы записать данные с URL)
 // и получилась НОВАЯ компонента ProfileContainer
-let WithUrlDataContainerComponent = withRouter(AuthRedirectComponent);
+// let WithUrlDataContainerComponent = withRouter(AuthRedirectComponent);
 
-// создаем наши коннекты по переменным и редьюсеры и передаем их в profile
+// создаем наши коннекты по переменным и редьюсеры и передаем их в profile - старая запись
 // connect сам сделает вызов с переменными и сделает автоматически dispatch
-export default connect(mapStateToProps, {authUser}) (WithUrlDataContainerComponent);
+// export default connect(mapStateToProps, {authUser}) (WithUrlDataContainerComponent);
+
+export default ProfileContainerCompose;

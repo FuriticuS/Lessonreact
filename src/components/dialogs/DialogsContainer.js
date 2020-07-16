@@ -7,6 +7,7 @@ import {connect} from "react-redux";
 // ------ import функции Action create, которые хранят тип для наших функций, из reducer
 import {addNewMessageActionCreator, updateMessageTextActionCreator} from "../../redux/reducer/dialogsPage";
 import {WithAuthRedirect} from "../hoc/WithAuthRedirect";
+import {compose} from "redux";
 
 // ------ определение функций для CONNECT
 // -- функции с данными где State это State = Store.getState();
@@ -17,13 +18,24 @@ let mapStateToProp = (State)=> {
     }
 }
 
-// компонент вида HOC - high order component который делает проверку логина
-let AuthRedirectComponent = WithAuthRedirect(Dialogs);
+//Это утилита из Redux для удобства вывода нескольких функций подряд
+//compose — это библиотека с уже готовыми компонентами высшего порядка. Идея в том, чтобы писать stateless-компоненты и разделять код на логические части
+// берем Dialogs кидаем в  WithAuthRedirect кидаем в Connect
+let DialogsContainer = compose(
+    connect(mapStateToProp, {
+        addNewMessage: addNewMessageActionCreator,
+        updateMessageText: updateMessageTextActionCreator
+    }),
+    WithAuthRedirect)
+(Dialogs);
 
-//-- закинем вторым параметром ссылки на нужные dispatch action create бывший mapDispatchToProps
-const DialogsContainer = connect(mapStateToProp, {
-    addNewMessage: addNewMessageActionCreator,
-    updateMessageText: updateMessageTextActionCreator
-}) (AuthRedirectComponent);
+// компонент вида HOC - high order component который делает проверку логина - старая запись
+// let AuthRedirectComponent = WithAuthRedirect(Dialogs);
+
+//-- закинем вторым параметром ссылки на нужные dispatch action create бывший mapDispatchToProps - старая запись
+// const DialogsContainer = connect(mapStateToProp, {
+//     addNewMessage: addNewMessageActionCreator,
+//     updateMessageText: updateMessageTextActionCreator
+// }) (AuthRedirectComponent);
 
 export default DialogsContainer;

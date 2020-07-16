@@ -13,8 +13,10 @@ import {
 } from "../../redux/reducer/userPage";
 
 import Preloader from "../preloader/Preloader";
+import {compose} from "redux";
+import {WithAuthRedirect} from "../hoc/WithAuthRedirect";
 
-//------------------------------------------container 2-----------------------------------------------------//
+//------------------------------------------container -----------------------------------------------------//
 // создадим классовую компоненту
 class UsersAPIComponent extends React.Component {
 
@@ -59,8 +61,7 @@ class UsersAPIComponent extends React.Component {
     }
 }
 
-
-//------------------------------------------container 1-----------------------------------------------------//
+//------------------------------------------container -----------------------------------------------------//
 //-- принимает весь State целиком уже с redux через redux-store и хранит данные для страницы user с props = user
 let mapStateToProps = (state) => {
     return {
@@ -73,11 +74,17 @@ let mapStateToProps = (state) => {
     }
 }
 
-//-- закинем вторым параметром ссылки на нужные action create из файла userPage
-export default connect(mapStateToProps,{
+//Это утилита из Redux для удобства вывода нескольких функций подряд
+// UsersAPIComponent -> WithAuthRedirect -> withRouter -> connect
+let UserContainerCompose = compose(
+    WithAuthRedirect,
+    connect(mapStateToProps,{
     follow:followAC,
     unfollow:unFollowAC,
     setCurrentPage: setCurrentPageAC,
     toggleFollowingProgress:toggleFollowingProgress,
     getPages:getPagesThunkCreator,
-    getUsers: getUsersThunkCreator})(UsersAPIComponent);
+    getUsers: getUsersThunkCreator}))(UsersAPIComponent)
+
+//-- закинем вторым параметром ссылки на нужные action create из файла userPage
+export default UserContainerCompose;
