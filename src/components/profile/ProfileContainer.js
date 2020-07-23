@@ -2,7 +2,7 @@ import React from "react";
 import Profile from "./Profile";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
-import {authUser} from "../../redux/reducer/profilePage";
+import {authUser, getStatus, updateStatus} from "../../redux/reducer/profilePage";
 import {WithAuthRedirect} from "../hoc/WithAuthRedirect";
 import {compose} from "redux";
 
@@ -20,11 +20,14 @@ class ProfileContainer extends React.Component {
         // достанем user-id из url нашего profile
         let userID = this.props.match.params.userId;
 
+        // покажет того user который забит руками в userID если мы не выберем в user конкретного
+        // мой ID = моему аккаунту на сайте https://social-network.samuraijs.com/account
         if (!userID) {
-            userID = 2;
+            userID = 8581;
         }
 
         this.props.authUser(userID);
+        this.props.getStatus(userID);
     }
 
     render() {
@@ -32,7 +35,12 @@ class ProfileContainer extends React.Component {
         return (
             <div>
                 {/*props для компоненты Profile*/}
-                <Profile {...this.props} profile={this.props.profile}/>
+                <Profile
+                    {...this.props}
+                    profile={this.props.profile}
+                    status={this.props.status}
+                    updateStatus={this.props.updateStatus}
+                />
 
             </div>
         )
@@ -42,14 +50,15 @@ class ProfileContainer extends React.Component {
 // пропсы для страницы Profile
 let mapStateToProps = (state) => {
     return {
-        profile: state.profilePage.profile
+        profile: state.profilePage.profile,
+        status: state.profilePage.status,
     }
 }
 
 //Это утилита из Redux для удобства вывода нескольких функций подряд
 // ProfileContainer -> WithAuthRedirect -> withRouter -> connect
 let ProfileContainerCompose = compose(
-    connect(mapStateToProps, {authUser}),
+    connect(mapStateToProps, {authUser, getStatus, updateStatus}),
     withRouter,
     WithAuthRedirect
 )(ProfileContainer);

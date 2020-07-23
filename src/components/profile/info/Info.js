@@ -19,7 +19,7 @@ const Info = (props) => {
                 <img src="https://of-crimea.ru/plug/Peschanye-plyazhi-Kryma.jpg" alt="beach"/>
             </div>
 
-            <ProfileStatus status={'Hello my friends'}/>
+            <ProfileStatus status={props.status} updateStatus={props.updateStatus}/>
 
             <div className="posts">
                 <img src={props.profile.photos.large} alt="logo-photos"/>
