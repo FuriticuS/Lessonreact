@@ -1,6 +1,7 @@
 import React from "react";
 import DialogItem from "./dialog-item/DialogItem";
 import Message from "./message/Message";
+import MyDialogsFormRedux from "./MyDialogsForm/MyDialogsForm";
 
 import './dialogs.css';
 
@@ -22,23 +23,10 @@ const Dialogs = (props) => {
             key={text.id}
         />);
 
-    // добавление сообщения
-    let addNewMessage = React.createRef();
 
-    // сторона UI
-    let addMessage = () => {
-        props.addNewMessage();
-    }
-
-    // сторона BLL
-    let onChangeTextarea = (event) => {
-        let message = event.target.value;
-        props.updateMessageText(message);
-    }
-
-    //------------------------------ функция обнуления в textarea
-    let onClickTextareaa = () => {
-        addNewMessage.current.value = '';
+    //передача всех значений из формы которые ввел user в dialogsPage - reducer
+    const addNewDialog = (values) => {
+        props.addNewMessage(values.newMessagesText); // - название нашего textarea
     }
 
     return (
@@ -55,14 +43,9 @@ const Dialogs = (props) => {
             </ul>
 
             <div className="dialogs-form">
-                <textarea
-                    ref={addNewMessage}
-                    value={props.newMessagesText}
 
-                    onChange={onChangeTextarea}
-                    onClick={onClickTextareaa}
-                />
-                <button onClick={addMessage}>Добавить сообщение</button>
+                <MyDialogsFormRedux onSubmit={addNewDialog}/>
+
             </div>
 
         </div>

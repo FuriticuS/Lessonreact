@@ -1,10 +1,7 @@
 // ------ action type сделаем переменные для все type в наших функциях
-import * as api from "../../api/api";
-import {setUserAC} from "./userPage";
 import {getProfile, pofileAPI} from "../../api/api";
 
 const ADD_POST = 'ADD-POST';
-const UPDATE_POST_TEXT = 'UPDATE-POST-TEXT';
 // сетаем для страницы профайл наши данные юзера -> потом export по нашему типу
 const SET_USER_PROFILE = 'SET_USER_PROFILE';
 // сетаем для страницы профайл наш статус юзера -> потом export по нашему типу
@@ -39,20 +36,13 @@ const profilePageReducer = (state = initialState, action) => {
             // взяли из функции addPosts()
             let newPost= {
                 id:6,
-                post: state.newPostText,
-                likes: 0
+                post: action.newMessagesPostText,
+                likes: 2
             };
 
             return {
                 ...state,
-                postData: [...state.postData, newPost],
-                newPostText :'Введите сообщение для страницы Profile',
-            }
-
-        case UPDATE_POST_TEXT :
-            return {
-                ...state,
-                newPostText: action.newText
+                postData: [...state.postData, newPost]
             }
 
         // отрисовываем наш стейт со всеми изменениями -> изначально создаем переменную profile: null в initialState
@@ -76,16 +66,10 @@ const profilePageReducer = (state = initialState, action) => {
 
 // ------ функции Action create, которые хранят тип для наших функций
 // ------ page Profile
-export const addPostActionCreator = () => {
+export const addPostActionCreator = (newMessagesPostText) => {
     return {
-        type:ADD_POST
-    }
-}
-
-export const updatePostTextActionCreator = (text) => {
-    return {
-        type:UPDATE_POST_TEXT,
-        newText: text
+        type:ADD_POST,
+        newMessagesPostText
     }
 }
 

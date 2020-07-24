@@ -1,5 +1,10 @@
 import React from "react";
-import LoginForm from "./LoginForm/LoginForm";
+import LoginReduxForm from "./LoginReduxForm";
+
+//передача всех значений из формы которые ввел user
+const onSubmit = (formData) => {
+    console.log(formData);
+}
 
 class Login extends React.Component {
 
@@ -8,7 +13,7 @@ class Login extends React.Component {
             <div>
                 <h1>Login</h1>
 
-                <LoginForm/>
+                <LoginReduxForm onSubmit={onSubmit}/>
 
             </div>
         );

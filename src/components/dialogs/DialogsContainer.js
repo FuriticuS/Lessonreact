@@ -5,7 +5,7 @@ import Dialogs from "./Dialogs";
 import {connect} from "react-redux";
 
 // ------ import функции Action create, которые хранят тип для наших функций, из reducer
-import {addNewMessageActionCreator, updateMessageTextActionCreator} from "../../redux/reducer/dialogsPage";
+import {addNewMessageActionCreator} from "../../redux/reducer/dialogsPage";
 import {WithAuthRedirect} from "../hoc/WithAuthRedirect";
 import {compose} from "redux";
 
@@ -23,8 +23,7 @@ let mapStateToProp = (State)=> {
 // берем Dialogs кидаем в  WithAuthRedirect кидаем в Connect
 let DialogsContainer = compose(
     connect(mapStateToProp, {
-        addNewMessage: addNewMessageActionCreator,
-        updateMessageText: updateMessageTextActionCreator
+        addNewMessage: addNewMessageActionCreator
     }),
     WithAuthRedirect)
 (Dialogs);

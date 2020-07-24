@@ -7,6 +7,9 @@ import sidebarReducer from "./reducer/sidebar";
 import userPageReducer from "./reducer/userPage";
 import authReducer from "./reducer/auth-reducer";
 
+//form
+import { reducer as formReducer } from 'redux-form';
+
 //импорт thunk после установки пакета
 import thunkMiddleware from "redux-thunk";
 
@@ -16,7 +19,8 @@ let reducers = combineReducers({
     dialogsPage: dialogsPageReducer,
     sidebar: sidebarReducer,
     usersPage: userPageReducer,
-    auth: authReducer
+    auth: authReducer,
+    form: formReducer,
 });
 
 // где applyMiddleware промежуточные слои для диспатчей

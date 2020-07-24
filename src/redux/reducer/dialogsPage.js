@@ -1,6 +1,5 @@
 // ------ action type сделаем переменные для все type в наших функциях
 const ADD_NEW_MESSAGE = 'ADD-NEW-MESSAGE';
-const UPDATE_MESSAGE_TEXT = 'UPDATE-MESSAGE-TEXT';
 
 //для нашего Redux зададим начальные значения
 let initialState = {
@@ -44,9 +43,7 @@ let initialState = {
         {id: 4, text: 'Its ok'},
         {id: 5, text: 'Lets go'},
         {id: 6, text: 'Cool'},
-    ],
-
-    newMessagesText: 'Введите сообщение для страницы Dialogs',
+    ]
 }
 
 const dialogsPageReducer = (state = initialState, action) => {
@@ -55,18 +52,11 @@ const dialogsPageReducer = (state = initialState, action) => {
         case ADD_NEW_MESSAGE:
             let newMessages = {
                 id: 7,
-                text: state.newMessagesText
+                text: action.newMessagesText
             }
             return{
                 ...state,
-                newMessagesText : 'Введите сообщение для страницы Dialogs',
                 textData: [...state.textData, newMessages],
-            }
-
-        case UPDATE_MESSAGE_TEXT:
-            return{
-                ...state,
-                newMessagesText: action.newMessage
             }
 
         default:
@@ -76,16 +66,10 @@ const dialogsPageReducer = (state = initialState, action) => {
 
 // ------ функции Action create, которые хранят тип для наших функций
 // ------ page Dialogs
-export const addNewMessageActionCreator = () => {
+export const addNewMessageActionCreator = (newMessagesText) => {
     return {
-        type: ADD_NEW_MESSAGE
-    }
-}
-
-export const updateMessageTextActionCreator = (message) => {
-    return {
-        type:UPDATE_MESSAGE_TEXT,
-        newMessage:message
+        type: ADD_NEW_MESSAGE,
+        newMessagesText
     }
 }
 

@@ -1,9 +1,9 @@
 import React from "react";
-
-import './myposts.css';
-
 // импорт одного поста
 import Post from "./Post/Post";
+
+import './myposts.css';
+import MyPostFormRedux from "./MyPostForm/MyPostsForm";
 
 const Myposts = (props) => {
 
@@ -16,25 +16,9 @@ const Myposts = (props) => {
         />
     );
 
-    //----------------------------- функция добавления постов со state (с BLL)
-    let newPostElement = React.createRef();
-
-    // сторона UI
-    let addPost= () => {
-        props.addPost(); // ---- функция добавления нового поста УЖЕ из STORE
-    }
-
-    //------------------------------ функция обработчик события на изменения в textarea
-
-    // сторона BLL
-    let onPostChange = (event) => {
-        let text = event.target.value; // current - свойства объекта !!!!!!
-        props.updatePostText(text); // ---- функция прокидывания букв из textarea через BLL в UI УЖЕ из STORE
-    }
-
-    //------------------------------ функция обнуления в textarea
-    let onClickTextarea = () => {
-        newPostElement.current.value = ''; // current - свойства объекта !!!!!!
+    //передача всех значений из формы которые ввел user в profilePage - reducer
+    const addNewPostMessages = (value) => {
+        props.addPost(value.newMessagesPostText); // - название нашего textarea
     }
 
     return (
@@ -42,14 +26,9 @@ const Myposts = (props) => {
             <h2>New Posts</h2>
 
             <div className="add-post">
-                <textarea
-                    ref={newPostElement}
-                    value={props.newPostText}
 
-                    onChange={onPostChange}
-                    onClick={onClickTextarea}
-                />
-                <button onClick={addPost}>Add post</button>
+                <MyPostFormRedux onSubmit={addNewPostMessages}/>
+
             </div>
 
             <ul className="myposts-block">
