@@ -1,5 +1,10 @@
 import React from "react";
 import {Field} from "redux-form";
+import {inputForm} from "../../FormsControls/FormsControls";
+import {maxLengthCreator, requiredField, touchCheck} from "../../../utils/validators/validators";
+
+// кол-во символов в полях ввода
+const maxLength = maxLengthCreator(30);
 
 const LoginForm = (props) => {
     return(
@@ -18,15 +23,15 @@ const LoginForm = (props) => {
             {/*11. в компоненте LoginReduxForm сделать функцию для сбора инфы с input onSubmit*/}
 
             <div className="name">
-                <Field component={"input"} name={"login"} placeholder={"login"}/>
+                <Field component={inputForm} name={"login"} placeholder={"login"} validate={[requiredField,maxLength]}/>
             </div>
 
             <div className="password">
-                <Field component={"input"} name={"password"} placeholder={"password"}/>
+                <Field component={inputForm} name={"password"} placeholder={"password"} validate={[requiredField,maxLength]}/>
             </div>
 
             <div className="remember-checkbox">
-                <Field component={"input"} name={"rememberMe"} type={"checkbox"}/> remeber me
+                <Field component={inputForm} name={"rememberMe"} type={"checkbox"} validate={[touchCheck]}/> remeber me
             </div>
 
             <div className="btn">
