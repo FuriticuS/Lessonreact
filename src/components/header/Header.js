@@ -14,7 +14,9 @@ const Header = (props) => {
             <div className="loginBlock">
                 {
                     // если мы авторизованы то покажем одно если нет то другое
-                    props.isAuth ? <div>Пользователь залогинен и его логин = {props.login}</div> : <NavLink to={'/login'}>Login</NavLink>
+                    props.isAuth
+                        ? <div>Пользователь залогинен и его логин = {props.login} <button onClick={props.logout}>Logout</button></div>
+                        : <NavLink to={'/login'}>Login</NavLink>
                 }
 
             </div>

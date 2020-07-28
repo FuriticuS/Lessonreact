@@ -23,7 +23,7 @@ class ProfileContainer extends React.Component {
         // покажет того user который забит руками в userID если мы не выберем в user конкретного
         // мой ID = моему аккаунту на сайте https://social-network.samuraijs.com/account
         if (!userID) {
-            userID = 8581;
+            userID = 8581; // - это мой личный id
         }
 
         this.props.authUser(userID);

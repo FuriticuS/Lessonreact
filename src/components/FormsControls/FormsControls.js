@@ -31,33 +31,33 @@ export const inputForm = ({input, meta, ...props}) => {
 }
 
 // Объеденим все проверки инпутов и textarea  в одну проверку минимизация
-export const FormControl = (props) => {
-    const showError = meta.touched && meta.error;
-
-    return (
-        <div className={"formControl"+" "+(showError ? "error" :"")}>
-            {props.children}
-            {showError ? <span>{meta.error}</span>: <span>Все ок</span>}
-        </div>
-    )
-}
-
-export const TextAreaSmall = (props) => {
-    const {input, meta, child, ...restProps} = props;
-    return (
-        <FormControl {...props}>
-            <textarea  {...input} {...restProps}/>
-        </FormControl>
-    )
-}
-
-export const InputSmall = (props) => {
-    const {input, meta, child, ...restProps} = props;
-    return (
-        <FormControl {...props}>
-            <input  {...input} {...restProps}/>
-        </FormControl>
-    )
-}
+// export const FormControl = (props) => {
+//     const showError = meta.touched && meta.error;
+//
+//     return (
+//         <div className={"formControl"+" "+(showError ? "error" :"")}>
+//             {props.children}
+//             {showError ? <span>{meta.error}</span>: <span>Все ок</span>}
+//         </div>
+//     )
+// }
+//
+// export const TextAreaSmall = (props) => {
+//     const {input, meta, child, ...restProps} = props;
+//     return (
+//         <FormControl {...props}>
+//             <textarea  {...input} {...restProps}/>
+//         </FormControl>
+//     )
+// }
+//
+// export const InputSmall = (props) => {
+//     const {input, meta, child, ...restProps} = props;
+//     return (
+//         <FormControl {...props}>
+//             <input  {...input} {...restProps}/>
+//         </FormControl>
+//     )
+// }
 
 

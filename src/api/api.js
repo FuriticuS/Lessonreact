@@ -70,3 +70,15 @@ export const pofileAPI = {
     }
 };
 
+// axios POST запрос для авторизации с нашего сайта напрямую
+// вместе с post запросом на сервер отправляются в запросе данные в {}
+// где rememberMe пока что false - наш чекбокс
+export const loginUser = (email, password, rememberMe=false) => {
+    return instance.post(`auth/login`, {email:email, password:password, rememberMe:rememberMe});
+}
+
+// axios delete запрос чтобы выйти с авторизации
+export const logoutUser = () => {
+    return instance.delete(`auth/login`);
+}
+

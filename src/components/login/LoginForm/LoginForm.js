@@ -23,11 +23,11 @@ const LoginForm = (props) => {
             {/*11. в компоненте LoginReduxForm сделать функцию для сбора инфы с input onSubmit*/}
 
             <div className="name">
-                <Field component={inputForm} name={"login"} placeholder={"login"} validate={[requiredField,maxLength]}/>
+                <Field component={inputForm} name={"email"} placeholder={"email"} validate={[requiredField,maxLength]}/>
             </div>
 
             <div className="password">
-                <Field component={inputForm} name={"password"} placeholder={"password"} validate={[requiredField,maxLength]}/>
+                <Field component={inputForm} name={"password"} placeholder={"password"} type={"password"} validate={[requiredField,maxLength]}/>
             </div>
 
             <div className="remember-checkbox">
