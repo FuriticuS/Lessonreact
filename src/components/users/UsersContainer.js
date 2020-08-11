@@ -14,6 +14,13 @@ import {
 
 import Preloader from "../preloader/Preloader";
 import {compose} from "redux";
+import {
+    getCurrentPage,
+    getFollowingInProcess, getIsFetching,
+    getPageSize,
+    getTotalUsersCount,
+    getUser
+} from "../../redux/reducer/user-selectors";
 
 //------------------------------------------container -----------------------------------------------------//
 // создадим классовую компоненту
@@ -61,15 +68,15 @@ class UsersAPIComponent extends React.Component {
 }
 
 //------------------------------------------container -----------------------------------------------------//
-//-- принимает весь State целиком уже с redux через redux-store и хранит данные для страницы user с props = user
+//-- принимает весь State целиком уже с redux через redux-store и хранит данные для страницы user с props = user, позже мы его пробросили через user-selectors и получили все функции
 let mapStateToProps = (state) => {
     return {
-        users: state.usersPage.users,
-        pageSize: state.usersPage.pageSize,
-        totalUsersCount: state.usersPage.totalUsersCount,
-        currentPage: state.usersPage.currentPage,
-        isFetching: state.usersPage.isFetching,
-        followingInProcess: state.usersPage.followingInProcess
+        users: getUser(state),
+        pageSize: getPageSize(state),
+        totalUsersCount: getTotalUsersCount(state),
+        currentPage: getCurrentPage(state),
+        isFetching: getIsFetching(state),
+        followingInProcess: getFollowingInProcess(state)
     }
 }
 

@@ -154,6 +154,9 @@ export const getPagesThunkCreator = (currentPage,pageSize) => {
     return (dispath) => {
         //--- задиспачим отображение preloader перед началом запроса
         dispath(toggleIsFetchingAC(true));
+        //--- задиспачим отображение выбранной страницы
+        dispath(setCurrentPageAC(currentPage));
+
         // get запрос из папки api для получения кол-ва страниц
         getPages(currentPage, pageSize).then(data => {
             //--- задиспачим конец отображения preloader после запроса
