@@ -27,6 +27,10 @@ class ProfileContainer extends React.Component {
             // мой id есть в authReducer в initialState = userId: null,
             // но надо сделать redirect на страницу userID
             userID = this.props.authorizedUserId; // - берем из пропсов из mapStateToProps
+            //но если опять userID необнаружен то отправим на страницу регистрации
+            if (!userID) {
+                this.props.history.path('/login')
+            }
         }
 
         this.props.authUser(userID);

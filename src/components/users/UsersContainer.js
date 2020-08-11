@@ -14,7 +14,6 @@ import {
 
 import Preloader from "../preloader/Preloader";
 import {compose} from "redux";
-import {WithAuthRedirect} from "../hoc/WithAuthRedirect";
 
 //------------------------------------------container -----------------------------------------------------//
 // создадим классовую компоненту
@@ -77,7 +76,7 @@ let mapStateToProps = (state) => {
 //Это утилита из Redux для удобства вывода нескольких функций подряд
 // UsersAPIComponent -> WithAuthRedirect -> withRouter -> connect
 let UserContainerCompose = compose(
-    WithAuthRedirect,
+    // WithAuthRedirect, - проверка авторизации пользователя(можно отключить)
     connect(mapStateToProps,{
     follow:followAC,
     unfollow:unFollowAC,
