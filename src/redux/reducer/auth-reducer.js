@@ -53,7 +53,7 @@ export const setAuthUserData = (userId, email, login, isAuth) => {
 export const getAuthUserData = () => (dispatch) => {
 
     // get запрос на адрес https://social-network.samuraijs.com/api/1.0/ хотим получить users
-    authUser().then(response => {
+    return authUser().then(response => {
         //делаем проверку зарегистрирован пользователь или нет
         // response - приходит с запросом с сервера, в нем лежит data, в дате лежит resultCode - eckjdbt в документашке API
         if (response.data.resultCode === 0) {
