@@ -1,5 +1,6 @@
 // ------ action type сделаем переменные для всех type в наших функциях
 import {authUser, loginUser, logoutUser} from "../../api/api";
+import {stopSubmit} from "redux-form";
 
 const SET_USER_DATA = 'SET_USER_DATA';
 
@@ -84,6 +85,17 @@ export const login = (email, password, rememberMe) => (dispatch) => {
             if (response.data.resultCode === 0) {
                 dispatch(getAuthUserData());
             }
+
+            // если в поле к примеру ПАРОЛЬ введено неправильное значение
+            // где login - название нашей формы, а email - где проблема
+            // чтобы сервер сам нам описал ошибку заведем переменную в которую будет записываться массив ошибок
+            // где response.data.messages.length название и длина сообщения с сервера
+            // https://social-network.samuraijs.com/docs#auth_login_post здесь все ответы
+            // где _error реакция на все ошибки в форме
+            else {
+                let errorMessages = response.data.messages.length > 0 ? response.data.messages[0] : "Some error";
+                dispatch(stopSubmit("login", {_error:errorMessages}));
+            }
         }
     );
 }
@@ -94,7 +106,6 @@ export const login = (email, password, rememberMe) => (dispatch) => {
 // 5 - в Header компоненте создаем кнопку logout
 // 6 - создаем событие onClick={props.logout} где ждем пропсы от контейнейрной компоненты
 // 7 - в HeaderContainer в методе connect конектим наш logout из auth-reducer
-// 8 -
 export const logout = () => (dispatch) => {
     logoutUser().then(
         response => {

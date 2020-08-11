@@ -23,7 +23,10 @@ class ProfileContainer extends React.Component {
         // покажет того user который забит руками в userID если мы не выберем в user конкретного
         // мой ID = моему аккаунту на сайте https://social-network.samuraijs.com/account
         if (!userID) {
-            userID = 8581; // - это мой личный id
+            //userID = 8581; // - это мой личный id
+            // мой id есть в authReducer в initialState = userId: null,
+            // но надо сделать redirect на страницу userID
+            userID = this.props.authorizedUserId; // - берем из пропсов из mapStateToProps
         }
 
         this.props.authUser(userID);
@@ -52,6 +55,8 @@ let mapStateToProps = (state) => {
     return {
         profile: state.profilePage.profile,
         status: state.profilePage.status,
+        authorizedUserId: state.auth.userId, // - взяли из redux-store
+        isAuth: state.auth.isAuth, // - взяли из redux-store
     }
 }
 

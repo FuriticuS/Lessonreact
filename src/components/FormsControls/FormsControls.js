@@ -13,7 +13,7 @@ export const TextArea = ({input, meta, ...props}) => {
     return (
         <div className={"formControl"+" "+(showError ? "error" :"")}>
             <textarea  {...input} {...props}/>
-            {showError ? <span>{meta.error}</span>: <span>Все ок</span>}
+            {showError && <span>{meta.error}</span>}
         </div>
     )
 }
@@ -25,7 +25,7 @@ export const inputForm = ({input, meta, ...props}) => {
     return (
         <div className={"formControl"+" "+(showError ? "error" :"")}>
             <input {...input} {...props}/>
-            {showError ? <span>{meta.error}</span>: <span>Все ок</span>}
+            {showError && <span>{meta.error}</span>}
         </div>
     )
 }

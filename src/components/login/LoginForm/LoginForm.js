@@ -34,6 +34,15 @@ const LoginForm = (props) => {
                 <Field component={inputForm} name={"rememberMe"} type={"checkbox"} validate={[touchCheck]}/> remeber me
             </div>
 
+            {/*Если ошибка в пароле или email отобразить блок*/}
+            {
+                props.error &&
+
+                <div className="error-message">
+                    {props.error}
+                </div>
+            }
+
             <div className="btn">
                 <button>login</button>
             </div>

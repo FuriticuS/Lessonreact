@@ -1,9 +1,5 @@
 import React from 'react';
 import {Route} from "react-router-dom";
-
-import './css/Reset-styles.css';
-import './css/App.css';
-
 import Navigation from "./components/navigation/Navigation";
 import News from "./components/news/News";
 import Music from "./components/music/Music";
@@ -14,6 +10,8 @@ import ProfileContainer from "./components/profile/ProfileContainer";
 import HeaderContainer from "./components/header/HeaderContainer";
 import Login from "./components/login/Login";
 
+import './css/Reset-styles.css';
+import './css/App.css';
 
 const App = (props) => {
     return (
