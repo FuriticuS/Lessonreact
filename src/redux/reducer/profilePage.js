@@ -6,7 +6,8 @@ const ADD_POST = 'ADD-POST';
 const SET_USER_PROFILE = 'SET_USER_PROFILE';
 // сетаем для страницы профайл наш статус юзера -> потом export по нашему типу
 const SET_STATUS = 'SET_STATUS';
-
+// удаление поста
+const DELETE_POST='DELETE_POST';
 
 
 //для нашего Redux зададим начальные значения
@@ -52,15 +53,23 @@ const profilePageReducer = (state = initialState, action) => {
                 profile: action.profile
             }
 
-        default :
-            return state;
-
         //когда status прийдет с сервака я хочу его засетать прийдет status сделать action нового status
         case SET_STATUS:
             return {
                 ...state,
                 status: action.status,
             }
+
+        // удаление поста
+        case DELETE_POST: {
+            return {
+                ...state,
+                postData: state.postData.filter(p => p.id != action.postId)
+            }
+        }
+
+        default :
+            return state;
     }
 }
 
@@ -79,6 +88,14 @@ export const setStatus = (status) => {
         status: status,
     }
 }
+
+// удаление поста
+export const deletePost = (postId) => {
+    return {
+        type: DELETE_POST,
+        postId: postId
+    }
+};
 
 // export по нашему типу чтобы получить все данные c user -> добавляем в case
 export const setUserProfile = (profile) => {
@@ -123,5 +140,8 @@ export const updateStatus = (status) => {
         )
     }
 }
+
+
+
 
 export default profilePageReducer;
