@@ -1,4 +1,5 @@
 // селектор для страницы user-container который будет отдавать все данные для map
+// селектор принимает на входе state и возвращает какое-то значение, в нашем случае часть state
 export const getUser = (state) => {
     return state.usersPage.users;
 }

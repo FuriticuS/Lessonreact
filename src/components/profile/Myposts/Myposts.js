@@ -5,9 +5,13 @@ import Post from "./Post/Post";
 import './myposts.css';
 import MyPostFormRedux from "./MyPostForm/MyPostsForm";
 
-const Myposts = (props) => {
 
-    let mypostsData = props.profilePage.postData.map( (post) =>
+// ------ React.memo - чтобы компонента не перересовывалась несколько раз
+const Myposts = React.memo(props => {
+
+    console.log('RENDER');
+
+    let mypostsData = props.profilePage.postData.map((post) =>
         <Post
             id={post.id}
             message={post.post}
@@ -33,12 +37,12 @@ const Myposts = (props) => {
 
             <ul className="myposts-block">
 
-                { mypostsData }
+                {mypostsData}
 
             </ul>
 
         </div>
     );
-};
+});
 
 export default Myposts;

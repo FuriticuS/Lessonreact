@@ -58,7 +58,7 @@ class ProfileContainer extends React.Component {
 let mapStateToProps = (state) => {
     return {
         profile: state.profilePage.profile,
-        status: state.profilePage.status,
+        status: state.profilePage.status, // - взяли из profilePageReducer
         authorizedUserId: state.auth.userId, // - взяли из redux-store
         isAuth: state.auth.isAuth, // - взяли из redux-store
     }

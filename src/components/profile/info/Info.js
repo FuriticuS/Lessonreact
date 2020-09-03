@@ -1,8 +1,8 @@
 import React from "react";
 import Preloader from "../../preloader/Preloader";
-import ProfileStatus from "../Status/ProfileStatus";
+import ProfileStatusWithHooks from "../ProfileHooks/ProfileStatusWithHooks";
 
-import './info.css'
+import './info.css';
 
 const Info = (props) => {
 
@@ -19,7 +19,7 @@ const Info = (props) => {
                 <img src="https://of-crimea.ru/plug/Peschanye-plyazhi-Kryma.jpg" alt="beach"/>
             </div>
 
-            <ProfileStatus status={props.status} updateStatus={props.updateStatus}/>
+            <ProfileStatusWithHooks status={props.status} updateStatus={props.updateStatus}/>
 
             <div className="posts">
                 <img src={props.profile.photos.large} alt="logo-photos"/>
