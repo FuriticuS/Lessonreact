@@ -1,0 +1,2 @@
+(this.webpackJsonplessonsreact=this.webpackJsonplessonsreact||[]).push([[7],{300:function(s,e,n){},302:function(s,e,n){"use strict";n.r(e);var t=n(0),a=n.n(t);n(300);e.default=function(){return a.a.createElement("div",{className:"news"},"News")}}}]);
+//# sourceMappingURL=7.b992f5fd.chunk.js.map
