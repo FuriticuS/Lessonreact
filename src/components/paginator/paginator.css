@@ -2,7 +2,10 @@
 .paginator {
     display: flex;
     flex-direction: row;
-    width: 100%;
+    align-items: center;
+    justify-content: center;
+    width: 50%;
+    margin: 0 auto;
 }
 .page-number {
     display: flex;

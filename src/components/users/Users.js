@@ -14,6 +14,7 @@ const Users = (props) => {
                 onPageChanged={props.onPageChanged}
                 totalUsersCount={props.totalUsersCount}
                 pageSize={props.pageSize}
+                portionSize={10}
             />
 
             <div className="users-page">
