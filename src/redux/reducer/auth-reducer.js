@@ -2,7 +2,7 @@
 import {authUser, loginUser, logoutUser} from "../../api/api";
 import {stopSubmit} from "redux-form";
 
-const SET_USER_DATA = 'SET_USER_DATA';
+const SET_USER_DATA = 'auth/SET_USER_DATA';
 
 //для нашего запроса посмотрим API документацию и зададим для переменных их нулевые значения
 let initialState = {
@@ -19,16 +19,16 @@ const authReducer = (state = initialState, action) => {
 
     // для нашей функции state = this._State.profilePage
     // вместо if используем switch
-        switch (action.type) {
+    switch (action.type) {
 
-            case SET_USER_DATA:
-                return {
-                    // получим state и перезапишем его
-                    ...state,
-                    // все данные лежат в action (state тоже)
-                    // - payload - в ней лежит userId, email, login, isAuth
-                    ...action.payload,
-                };
+        case SET_USER_DATA:
+            return {
+                // получим state и перезапишем его
+                ...state,
+                // все данные лежат в action (state тоже)
+                // - payload - в ней лежит userId, email, login, isAuth
+                ...action.payload,
+            };
 
         default :
             return state;
@@ -39,8 +39,8 @@ const authReducer = (state = initialState, action) => {
 // --- упаковываем action в объект который будет задиспачен в reducer
 export const setAuthUserData = (userId, email, login, isAuth) => {
     return {
-        type:SET_USER_DATA,
-        payload:{
+        type: SET_USER_DATA,
+        payload: {
             userId,
             email,
             login,
@@ -50,21 +50,20 @@ export const setAuthUserData = (userId, email, login, isAuth) => {
 }
 
 //-------------------------------------------------thunk for header авторизация
-export const getAuthUserData = () => (dispatch) => {
+// добавляем новое = await и async
+export const getAuthUserData = () => async (dispatch) => {
 
     // get запрос на адрес https://social-network.samuraijs.com/api/1.0/ хотим получить users
-    return authUser().then(response => {
-        //делаем проверку зарегистрирован пользователь или нет
-        // response - приходит с запросом с сервера, в нем лежит data, в дате лежит resultCode - eckjdbt в документашке API
-        if (response.data.resultCode === 0) {
-            // response.data - метод axios, а data->userId , data->email, data->login - это в документашке api описание в разделе Properties
-            let {id, login, email} = response.data.data;
+    let response = await authUser();
+    //делаем проверку зарегистрирован пользователь или нет
+    // response - приходит с запросом с сервера, в нем лежит data, в дате лежит resultCode - eckjdbt в документашке API
+    if (response.data.resultCode === 0) {
+        // response.data - метод axios, а data->userId , data->email, data->login - это в документашке api описание в разделе Properties
+        let {id, login, email} = response.data.data;
 
-            // если все ок до dispatch
-           dispatch(setAuthUserData(id, email, login, true));
-        }
-
-    });
+        // если все ок до dispatch
+        dispatch(setAuthUserData(id, email, login, true));
+    }
 }
 
 //------------------------------------------------- thunk функция для аторизации прямо с сайта
@@ -79,26 +78,23 @@ export const getAuthUserData = () => (dispatch) => {
 // 9 - создаем собыетие для пропсов LoginReduxForm onSubmit={onSubmit}
 // 10 - создаем mapStateToProps который возьмет reducer isAuth в redux-store
 // 11 - если все успешно и isAuth = true то redirect на страницу profile
-export const login = (email, password, rememberMe) => (dispatch) => {
-    loginUser(email, password, rememberMe, true).then(
-        response => {
-            if (response.data.resultCode === 0) {
-                dispatch(getAuthUserData());
-            }
+export const login = (email, password, rememberMe) => async (dispatch) => {
+    let response = await loginUser(email, password, rememberMe, true);
 
-            // если в поле к примеру ПАРОЛЬ введено неправильное значение
-            // где login - название нашей формы, а email - где проблема
-            // чтобы сервер сам нам описал ошибку заведем переменную в которую будет записываться массив ошибок
-            // где response.data.messages.length название и длина сообщения с сервера
-            // https://social-network.samuraijs.com/docs#auth_login_post здесь все ответы
-            // где _error реакция на все ошибки в форме
-            else {
-                let errorMessages = response.data.messages.length > 0 ? response.data.messages[0] : "Some error";
-                dispatch(stopSubmit("login", {_error:errorMessages}));
-            }
-        }
-    );
-}
+    if (response.data.resultCode === 0) {
+        dispatch(getAuthUserData());
+    }
+        // если в поле к примеру ПАРОЛЬ введено неправильное значение
+        // где login - название нашей формы, а email - где проблема
+        // чтобы сервер сам нам описал ошибку заведем переменную в которую будет записываться массив ошибок
+        // где response.data.messages.length название и длина сообщения с сервера
+        // https://social-network.samuraijs.com/docs#auth_login_post здесь все ответы
+    // где _error реакция на все ошибки в форме
+    else {
+        let errorMessages = response.data.messages.length > 0 ? response.data.messages[0] : "Some error";
+        dispatch(stopSubmit("login", {_error: errorMessages}));
+    }
+};
 // 1 - создаем thunk для logout
 // 2 - в setAuthUserData добавляем переменную isAuth
 // 3 - в isAuth передать false
@@ -106,16 +102,12 @@ export const login = (email, password, rememberMe) => (dispatch) => {
 // 5 - в Header компоненте создаем кнопку logout
 // 6 - создаем событие onClick={props.logout} где ждем пропсы от контейнейрной компоненты
 // 7 - в HeaderContainer в методе connect конектим наш logout из auth-reducer
-export const logout = () => (dispatch) => {
-    logoutUser().then(
-        response => {
-            if (response.data.resultCode === 0) {
-                dispatch(setAuthUserData(null, null, null, false));
-            }
+export const logout = () => async (dispatch) => {
+    let response = await logoutUser()
+        if (response.data.resultCode === 0) {
+            dispatch(setAuthUserData(null, null, null, false));
         }
-    );
 }
-
 
 export default authReducer;
 

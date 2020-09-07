@@ -106,42 +106,28 @@ export const setUserProfile = (profile) => {
 }
 
 // thunk export по нашему типу чтобы получить все данные c user -> добавляем в case
-export const authUser = (userID) => {
-    return (dispatch) => {
-        // get запрос на адрес https://social-network.samuraijs.com/api/1.0/ хотим получить users
-        getProfile(userID).then(response => {
-            // получаем ответ и записывам весь файл с API со всеми данными
-            dispatch(setUserProfile(response.data));
-        });
-    }
+export const authUser = (userID) => async (dispatch) => {
+    // get запрос на адрес https://social-network.samuraijs.com/api/1.0/ хотим получить users
+    let response = await getProfile(userID);
+    // получаем ответ и записывам весь файл с API со всеми данными
+    dispatch(setUserProfile(response.data));
 }
 
 // thunk для status по нашему типу чтобы получить все данные c status -> добавляем в case
 // get запрос для userID
-export const getStatus = (userID) => {
-    return (dispatch) => {
-        pofileAPI.getStatus(userID).then( response =>{
-                dispatch(setStatus(response.data));
-            }
-        )
-    }
+export const getStatus = (userID) => async (dispatch) => {
+    let response = await pofileAPI.getStatus(userID)
+    dispatch(setStatus(response.data));
 }
 
 // thunk для UPDATEstatus по нашему типу чтобы обновить status на серваке-> добавляем в case
 // указываем что и какой status надо обновить
-export const updateStatus = (status) => {
-    return (dispatch) => {
-        pofileAPI.updateStatus(status).then( response =>{
-                //смотрим в документашку чтобы понять что прийдет в ответ https://social-network.samuraijs.com/docs#profile_status_put = если 0 то ок если 1 то ошибка
-                if (response.data.resultCode === 0) {
-                    dispatch(setStatus(status));
-                }
-            }
-        )
+export const updateStatus = (status) => async (dispatch) => {
+    let response = await pofileAPI.updateStatus(status);
+    //смотрим в документашку чтобы понять что прийдет в ответ https://social-network.samuraijs.com/docs#profile_status_put = если 0 то ок если 1 то ошибка
+    if (response.data.resultCode === 0) {
+        dispatch(setStatus(status));
     }
 }
-
-
-
 
 export default profilePageReducer;

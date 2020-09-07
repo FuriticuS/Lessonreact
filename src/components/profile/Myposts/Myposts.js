@@ -9,8 +9,6 @@ import MyPostFormRedux from "./MyPostForm/MyPostsForm";
 // ------ React.memo - чтобы компонента не перересовывалась несколько раз
 const Myposts = React.memo(props => {
 
-    console.log('RENDER');
-
     let mypostsData = props.profilePage.postData.map((post) =>
         <Post
             id={post.id}

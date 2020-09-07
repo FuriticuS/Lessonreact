@@ -101,14 +101,14 @@ const userPageReducer = (state = initialState, action) => {
 // --- задает тип для user follow или unfollow
 export const followAC = (userId) => {
     return {
-        type:UNFOLLOW,
+        type:FOLLOW,
         userId
     }
 }
 
 export const unFollowAC = (userId) => {
     return {
-        type:FOLLOW,
+        type:UNFOLLOW,
         userId
     }
 }
@@ -151,75 +151,67 @@ export const toggleFollowingProgress = (followingInProcess, userId) => {
 
 //-------------------------------------------------thunk for UserContainer.js
 export const getPagesThunkCreator = (currentPage,pageSize) => {
-    return (dispath) => {
+    return async (dispath) => {
         //--- задиспачим отображение preloader перед началом запроса
         dispath(toggleIsFetchingAC(true));
         //--- задиспачим отображение выбранной страницы
         dispath(setCurrentPageAC(currentPage));
 
         // get запрос из папки api для получения кол-ва страниц
-        getPages(currentPage, pageSize).then(data => {
-            //--- задиспачим конец отображения preloader после запроса
-            dispath(toggleIsFetchingAC(false));
-            // получаем ответ и записывам его
-            dispath(setUserAC(data.items));
-            dispath(setTotalUsersCountAC(data.totalCount));
-        });
+        let data = await getPages(currentPage, pageSize)
+        //--- задиспачим конец отображения preloader после запроса
+        dispath(toggleIsFetchingAC(false));
+        // получаем ответ и записывам его
+        dispath(setUserAC(data.items));
+        dispath(setTotalUsersCountAC(data.totalCount));
     }
 }
 
 //-------------------------------------------------thunk for UserContainer.js
 export const getUsersThunkCreator = (pageNumber, pageSize) => {
-    return (dispatch) => {
-
+    return async (dispatch) => {
         dispatch(setCurrentPageAC(pageNumber));
-
         //--- отображение preloader перед началом запроса
         dispatch(toggleIsFetchingAC(true));
-
         // get запрос из папки api для получения всех users
-        getUsers(pageNumber, pageSize).then(data => {
-            //--- конец отображения preloader после запроса
-            dispatch(toggleIsFetchingAC(false));
-            // получаем ответ и записывам его
-            dispatch(setUserAC(data.items));
-        });
-
+        let data = await getUsers(pageNumber, pageSize)
+        //--- конец отображения preloader после запроса
+        dispatch(toggleIsFetchingAC(false));
+        // получаем ответ и записывам его
+        dispatch(setUserAC(data.items));
     }
 }
 
 //-------------------------------------------------thunk for User.js
 export const follow = (userId) => {
-    return (dispatch) => {
+    return async (dispatch) => {
         // loader для ожидания follow
         dispatch(toggleFollowingProgress(true, userId));
 
         // запрос на подписку
-        api.postFollow(userId).then(response => {
-            // удачный ответ после запроса === 0
-            if (response.data.resultCode === 0) {
-                dispatch(followAC(userId));
-            }
-            // loader после окончания ожидания unfollow
-            dispatch(toggleFollowingProgress(false, userId));
-        });
+        let response = await api.postFollow(userId);
+        // удачный ответ после запроса === 0
+        if (response.data.resultCode === 0) {
+            dispatch(followAC(userId));
+        }
+        // loader после окончания ожидания unfollow
+        dispatch(toggleFollowingProgress(false, userId));
     }
 }
 
 //-------------------------------------------------thunk for User.js
 export const unfollow = (userId) => {
-    return (dispatch) => {
+    return async (dispatch) => {
         // loader для ожидания follow
         dispatch(toggleFollowingProgress(true, userId));
         // запрос на отписку
-        api.delUnfollow(userId).then(response => {
-            // удачный ответ после запроса === 0
-            if (response.data.resultCode === 0) {
-                dispatch(unFollowAC(userId));
-            }
-            // loader после окончания ожидания unfollow
-            dispatch(toggleFollowingProgress(false, userId));
-        });
+        let response = await api.delUnfollow(userId);
+        // удачный ответ после запроса === 0
+        if (response.data.resultCode === 0) {
+            dispatch(unFollowAC(userId));
+        }
+        // loader после окончания ожидания unfollow
+        dispatch(toggleFollowingProgress(false, userId));
     }
 }
 
