@@ -37,6 +37,19 @@ class ProfileContainer extends React.Component {
         this.props.getStatus(userID);
     }
 
+    // когда произошло обновление компоненты, изменился либо url либо какие-либо данные
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        let userID = this.props.match.params.userId;
+        if (!userID) {
+            userID = this.props.authorizedUserId;
+            if (!userID) {
+                this.props.history.path('/login')
+            }
+        }
+        this.props.authUser(userID);
+        this.props.getStatus(userID);
+    }
+
     render() {
 
         return (

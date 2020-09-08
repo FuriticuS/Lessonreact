@@ -6,6 +6,8 @@ import './info.css';
 
 const Info = (props) => {
 
+    const userPhoto = "https://image.flaticon.com/icons/png/512/17/17797.png";
+
     if (!props.profile) {
         return (
             <Preloader />
@@ -22,9 +24,12 @@ const Info = (props) => {
             <ProfileStatusWithHooks status={props.status} updateStatus={props.updateStatus}/>
 
             <div className="posts">
-                <img src={props.profile.photos.large} alt="logo-photos"/>
+                {/*если нет фотки то заглушку*/}
+                <img src={props.profile.photos.large || userPhoto} alt="logos-foto" className="logos-foto"/>
+
                 <h1>Avatar</h1>
-                <img src={props.profile.photos.small} alt="logo-small"/>
+                {/*если нет фотки то заглушку*/}
+                <img src={props.profile.photos.small || userPhoto} alt="logo-small" className="logo-small"/>
                 <p>Мое имя - {props.profile.fullName}</p>
                 <p>{props.profile.abouMe}</p>
 
