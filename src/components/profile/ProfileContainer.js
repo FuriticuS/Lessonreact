@@ -2,7 +2,7 @@ import React from "react";
 import Profile from "./Profile";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
-import {authUser, getStatus, updateStatus} from "../../redux/reducer/profilePage";
+import {authUser, getStatus, savePhoto, saveProfile, updateStatus} from "../../redux/reducer/profilePage";
 import {WithAuthRedirect} from "../hoc/WithAuthRedirect";
 import {compose} from "redux";
 
@@ -13,10 +13,8 @@ class ProfileContainer extends React.Component {
         super(props);
     }
 
-    //метод жизненного цикла - методы которые есть у обьекта, который создан с помощью этого класса
-    // и React работает с этим обьектом через эти методы
-    componentDidMount() {
-
+    // т.к. повторяется логика в componentDidMount и componentDidUpdate сделаем вспомогательную функцию
+    refreshProfile() {
         // достанем user-id из url нашего profile
         let userID = this.props.match.params.userId;
 
@@ -32,22 +30,21 @@ class ProfileContainer extends React.Component {
                 this.props.history.path('/login')
             }
         }
-
         this.props.authUser(userID);
         this.props.getStatus(userID);
     }
 
+    //метод жизненного цикла - методы которые есть у обьекта, который создан с помощью этого класса
+    // и React работает с этим обьектом через эти методы
+    componentDidMount() {
+        this.refreshProfile();
+    }
+
     // когда произошло обновление компоненты, изменился либо url либо какие-либо данные
     componentDidUpdate(prevProps, prevState, snapshot) {
-        let userID = this.props.match.params.userId;
-        if (!userID) {
-            userID = this.props.authorizedUserId;
-            if (!userID) {
-                this.props.history.path('/login')
-            }
+        if (this.props.match.params.userId != prevProps.match.params.userId){
+            this.refreshProfile();
         }
-        this.props.authUser(userID);
-        this.props.getStatus(userID);
     }
 
     render() {
@@ -57,9 +54,13 @@ class ProfileContainer extends React.Component {
                 {/*props для компоненты Profile*/}
                 <Profile
                     {...this.props}
+                    //владелец cтраницы - если владелец то = true на других страницах пользователей false
+                    owner={!this.props.match.params.userId}
                     profile={this.props.profile}
                     status={this.props.status}
                     updateStatus={this.props.updateStatus}
+                    savePhoto={this.props.savePhoto}
+                    saveProfile={this.props.saveProfile}
                 />
 
             </div>
@@ -80,7 +81,7 @@ let mapStateToProps = (state) => {
 //Это утилита из Redux для удобства вывода нескольких функций подряд
 // ProfileContainer -> WithAuthRedirect -> withRouter -> connect
 let ProfileContainerCompose = compose(
-    connect(mapStateToProps, {authUser, getStatus, updateStatus}),
+    connect(mapStateToProps, {authUser, getStatus, updateStatus, savePhoto, saveProfile}),
     withRouter,
     WithAuthRedirect
 )(ProfileContainer);

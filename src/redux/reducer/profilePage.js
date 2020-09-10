@@ -1,5 +1,6 @@
 // ------ action type сделаем переменные для все type в наших функциях
-import {getProfile, pofileAPI} from "../../api/api";
+import {getProfile, profileAPI} from "../../api/api";
+import {stopSubmit} from "redux-form";
 
 const ADD_POST = 'ADD-POST';
 // сетаем для страницы профайл наши данные юзера -> потом export по нашему типу
@@ -8,6 +9,10 @@ const SET_USER_PROFILE = 'SET_USER_PROFILE';
 const SET_STATUS = 'SET_STATUS';
 // удаление поста
 const DELETE_POST='DELETE_POST';
+// добавление фото к своему аккаунту
+const SAVE_PHOTO_SUCCESS = 'SAVE_PHOTO_SUCCESS';
+// обновление данных с формы для профайла
+const SAVE_PROFILE_SUCCES = 'SAVE_PROFILE_SUCCES';
 
 
 //для нашего Redux зададим начальные значения
@@ -68,11 +73,20 @@ const profilePageReducer = (state = initialState, action) => {
             }
         }
 
+        // сохранение новой картинки
+        case SAVE_PHOTO_SUCCESS: {
+            return {
+                ...state,
+                profile: {...state.profile, photos:action.photos}
+            }
+        }
+
         default :
             return state;
     }
 }
 
+// --------------------------------------------------------------------------------------- types
 // ------ функции Action create, которые хранят тип для наших функций
 // ------ page Profile
 export const addPostActionCreator = (newMessagesPostText) => {
@@ -105,6 +119,16 @@ export const setUserProfile = (profile) => {
     }
 }
 
+// сохранение картинки где photos - название картинки на серваке
+export const savePhotoSucces = (photos) => {
+    return {
+        type: SAVE_PHOTO_SUCCESS,
+        photos: photos
+    }
+}
+
+// --------------------------------------------------------------------------------------- dispatch
+
 // thunk export по нашему типу чтобы получить все данные c user -> добавляем в case
 export const authUser = (userID) => async (dispatch) => {
     // get запрос на адрес https://social-network.samuraijs.com/api/1.0/ хотим получить users
@@ -116,18 +140,49 @@ export const authUser = (userID) => async (dispatch) => {
 // thunk для status по нашему типу чтобы получить все данные c status -> добавляем в case
 // get запрос для userID
 export const getStatus = (userID) => async (dispatch) => {
-    let response = await pofileAPI.getStatus(userID)
+    let response = await profileAPI.getStatus(userID)
     dispatch(setStatus(response.data));
 }
 
 // thunk для UPDATEstatus по нашему типу чтобы обновить status на серваке-> добавляем в case
 // указываем что и какой status надо обновить
 export const updateStatus = (status) => async (dispatch) => {
-    let response = await pofileAPI.updateStatus(status);
+    let response = await profileAPI.updateStatus(status);
     //смотрим в документашку чтобы понять что прийдет в ответ https://social-network.samuraijs.com/docs#profile_status_put = если 0 то ок если 1 то ошибка
     if (response.data.resultCode === 0) {
         dispatch(setStatus(status));
     }
 }
+
+//thunk для savePhoto в компоненте Info
+export const savePhoto = (file) => async (dispatch) =>{
+    let response = await profileAPI.savePhoto(file);
+
+    //если ответ после сохранения не равен 1
+    // все фотки и данные об аккаунте лежат в response.data
+    if (response.data.resultCode === 0) {
+        dispatch(savePhotoSucces(response.data.data.photos));
+    }
+}
+
+//thunk для saveProfile в компоненте Info
+// тк сервер ничего не делает а только сохраняет новые данные то будет вызывать thunk authUser с обновленным getState
+export const saveProfile = (profile) => async (dispatch, getState) =>{
+
+    const userId = getState().auth.userId;
+
+    let response = await profileAPI.saveProfile(profile);
+
+    if (response.data.resultCode === 0){
+        dispatch(authUser(userId));
+    }
+
+    else {
+        dispatch(stopSubmit("edit-profile", {_error: response.data.messages[0]}));
+        dispatch(stopSubmit("edit-profile", {"contacts": {"facebook":response.data.messages[0]}}));
+        return Promise.reject(response.data.messages[0]);
+    }
+}
+
 
 export default profilePageReducer;

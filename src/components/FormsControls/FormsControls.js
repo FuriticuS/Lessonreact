@@ -1,4 +1,5 @@
 import React from "react";
+import Field from "redux-form/lib/Field";
 
 import './FormsControls.css';
 
@@ -29,6 +30,20 @@ export const inputForm = ({input, meta, ...props}) => {
         </div>
     )
 }
+
+// стандартная форма для всех импутов
+export const createField = (placeholder, name, validators, component, props={}, text="") => (
+    <div>
+        <Field
+            placeholder={placeholder}
+            name={name}
+            validate={validators}
+            component={component}
+            {...props}
+        />
+        {text}
+    </div>
+)
 
 // Объеденим все проверки инпутов и textarea  в одну проверку минимизация
 // export const FormControl = (props) => {

@@ -55,7 +55,7 @@ export const postFollow = (userId) => {
 // Info (прокидываем пропсы в наш компонент ProfileStatus как status={props.status} updateStatus={props.updateStatus}) ->
 // ProfileStatus (добавляем activateEditMode добавляем deActivateEditMode добавляем в input все наши данные)
 
-export const pofileAPI = {
+export const profileAPI = {
     getProfile(userId){
         return instance.get(`profile/`+userId);
     },
@@ -65,9 +65,27 @@ export const pofileAPI = {
     // для изменения статуса отправляет пут запрос и заменяем статус старый на новый статус
     // status - это имя на сервере для статуса
     // text - это что мы изменили
-    updateStatus(text){
-        return instance.put(`profile/status`, {status: text});
+    updateStatus(status){
+        return instance.put(`profile/status`, {status: status});
+    },
+    // смотрим документацию какой запрос делать в profile
+    // чтобы отправить файл нужно сформировать запрос с обьектом formData
+    savePhoto(photoFile) {
+        const formData = new FormData();
+        // как описать запрос смотрим в back документашке
+        formData.append("image", photoFile);
+        // третий параметр - это настройка отправления formData - headers
+        return instance.put(`profile/photo`, formData, {
+            headers: {
+                'Content-Type':'multipart/form-data'
+            }
+        });
+    },
+    // отправка данных формы профайла
+    saveProfile(profile) {
+        return instance.put(`profile`, profile);
     }
+
 };
 
 // axios POST запрос для авторизации с нашего сайта напрямую
