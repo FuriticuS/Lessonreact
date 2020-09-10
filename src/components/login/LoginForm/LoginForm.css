@@ -1,0 +1,22 @@
+.login-form {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    margin: 50px auto;
+    background: #c2cedc;
+    padding: 20px;
+}
+
+.login-form .login {
+    display: flex;
+    flex-direction: column;
+}
+
+.login-form .login div {
+    margin-bottom: 20px;
+}
+
+.remember-checkbox {
+    display: flex;
+    flex-direction: row;
+}

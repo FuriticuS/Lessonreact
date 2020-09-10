@@ -3,15 +3,16 @@ import {Field} from "redux-form";
 import {inputForm} from "../../FormsControls/FormsControls";
 import {maxLengthCreator, requiredField, touchCheck} from "../../../utils/validators/validators";
 
+import './LoginForm.css';
+
 // кол-во символов в полях ввода
 const maxLength = maxLengthCreator(30);
 
 const LoginForm = (props) => {
-    debugger;
     return(
         <form className="login" onSubmit={props.handleSubmit}>
             {
-                props.text && <div>hello!!!!!!</div>
+                props.text && <div>{props.text}</div>
             }
             {/*1. устанавливаем redux-form*/}
             {/*2. добавляем в redux-store (import { reducer as formReducer } from 'redux-form')*/}
@@ -51,7 +52,7 @@ const LoginForm = (props) => {
             }
 
             {
-                props.captchaUrl && <Field component={inputForm} name={"captcha"} placeholder={"password"} type={"text"} validate={[requiredField]} />
+                props.captchaUrl && <Field component={inputForm} name={"captcha"} type={"text"} validate={[requiredField]} />
             }
 
             <div className="btn">
