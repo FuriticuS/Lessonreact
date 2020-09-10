@@ -2,13 +2,13 @@ import React from "react";
 import LoginReduxForm from "./LoginReduxForm";
 import {connect} from "react-redux";
 import {Redirect} from "react-router-dom";
-import {login, logout} from "../../redux/reducer/auth-reducer";
+import {login} from "../../redux/reducer/auth-reducer";
 
 const Login = (props) => {
 
     // проверка данных + отправка на сервер
     const onSubmit = (formData) => {
-        props.login(formData.email, formData.password, formData.rememberMe);
+        props.login(formData.email, formData.password, formData.rememberMe, formData.captcha);
     }
 
     // если пользователь залогинен то перейти на страницу profile
@@ -20,7 +20,7 @@ const Login = (props) => {
         <div>
             <h1>Login</h1>
 
-            <LoginReduxForm onSubmit={onSubmit}/>
+            <LoginReduxForm onSubmit={onSubmit} captchaUrl={props.captchaUrl} text={'привет'}/>
 
         </div>
     );
@@ -29,6 +29,7 @@ const Login = (props) => {
 // берем auth из state в redux-store
 let mapStateToProps = (state) => {
     return {
+        captchaUrl: state.auth.captchaUrl,
         isAuth: state.auth.isAuth,
     }
 }

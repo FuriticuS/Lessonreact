@@ -1,8 +1,9 @@
 // ------ action type сделаем переменные для всех type в наших функциях
-import {authUser, loginUser, logoutUser} from "../../api/api";
+import {authUser, loginUser, logoutUser, securityAPI} from "../../api/api";
 import {stopSubmit} from "redux-form";
 
 const SET_USER_DATA = 'auth/SET_USER_DATA';
+const GET_CAPTCHA_URL_SUCCESS = 'auth/GET_CAPTCHA_URL_SUCCESS';
 
 //для нашего запроса посмотрим API документацию и зададим для переменных их нулевые значения
 let initialState = {
@@ -11,9 +12,11 @@ let initialState = {
     email: null,
     login: null,
     //если залогинен то true
-    isAuth: false
+    isAuth: false,
+    captchaUrl: null
 };
 
+//------------------------------------------------------------------- action's
 //создаем редьюсор для login и добавляем его в коллекцию redux-store
 const authReducer = (state = initialState, action) => {
 
@@ -22,19 +25,20 @@ const authReducer = (state = initialState, action) => {
     switch (action.type) {
 
         case SET_USER_DATA:
+        case GET_CAPTCHA_URL_SUCCESS:
             return {
                 // получим state и перезапишем его
                 ...state,
                 // все данные лежат в action (state тоже)
                 // - payload - в ней лежит userId, email, login, isAuth
-                ...action.payload,
+                ...action.payload
             };
-
         default :
             return state;
     }
 }
 
+//------------------------------------------------- action-creators
 // --- задача этой функции вернуть объект action
 // --- упаковываем action в объект который будет задиспачен в reducer
 export const setAuthUserData = (userId, email, login, isAuth) => {
@@ -48,6 +52,15 @@ export const setAuthUserData = (userId, email, login, isAuth) => {
         }
     }
 }
+
+// --- для capthca
+export const getCaptchaUrlSuccess = (captchaUrl) => {
+    return{
+        type: GET_CAPTCHA_URL_SUCCESS,
+        payload: {captchaUrl}
+    }
+}
+
 
 //-------------------------------------------------thunk for header авторизация
 // добавляем новое = await и async
@@ -78,8 +91,8 @@ export const getAuthUserData = () => async (dispatch) => {
 // 9 - создаем собыетие для пропсов LoginReduxForm onSubmit={onSubmit}
 // 10 - создаем mapStateToProps который возьмет reducer isAuth в redux-store
 // 11 - если все успешно и isAuth = true то redirect на страницу profile
-export const login = (email, password, rememberMe) => async (dispatch) => {
-    let response = await loginUser(email, password, rememberMe, true);
+export const login = (email, password, rememberMe, captcha) => async (dispatch) => {
+    let response = await loginUser(email, password, rememberMe, captcha, true);
 
     if (response.data.resultCode === 0) {
         dispatch(getAuthUserData());
@@ -91,10 +104,16 @@ export const login = (email, password, rememberMe) => async (dispatch) => {
         // https://social-network.samuraijs.com/docs#auth_login_post здесь все ответы
     // где _error реакция на все ошибки в форме
     else {
+        // если ответ с сервера(resultCode) = 10 (это условие backenda)
+        if(response.data.resultCode === 10) {
+            dispatch(getCaptchaUrl());
+        }
+
         let errorMessages = response.data.messages.length > 0 ? response.data.messages[0] : "Some error";
         dispatch(stopSubmit("login", {_error: errorMessages}));
     }
 };
+
 // 1 - создаем thunk для logout
 // 2 - в setAuthUserData добавляем переменную isAuth
 // 3 - в isAuth передать false
@@ -107,6 +126,29 @@ export const logout = () => async (dispatch) => {
         if (response.data.resultCode === 0) {
             dispatch(setAuthUserData(null, null, null, false));
         }
+}
+
+
+//------------------------------------------------- thunk функция для Captcha
+// 1 - в api сделали запрос
+// 2 - в reducer сделали thunk
+// 3 - смотрим все в документашке для зарпосов на серве
+// 4 - у нас есть security/get-captcha-url которая возращает data обьект со свойством url
+// 5 - добавляем captchaUrl в initialState с нулевым первым значением
+// 6 - делаем action-creator с GET_CAPTCHA_URL_SUCESS под именем getCaptchaUrlSuccess
+// 7 - добавляем в наш action case с GET_CAPTCHA_URL_SUCESS
+// 8 - добавляем в thunk наш action = getCaptchaUrlSuccess() для выполнения результата
+// 9 - нашу thunk для captcha можно добавить в другую санку - в нашем случае login
+// 10 - если captchaUrl изменится то мы пользователю покажем картинку (в initial state)
+// 11 - в Login.js зафиксить изменения captchaUrl и если она не NULL то показать картинку пользователю
+// 12 - прокинуть с помощью props в логин форму
+// 13 - сделать проверку captchaUrl null или нет
+export const getCaptchaUrl = () => async (dispatch) => {
+    let response = await securityAPI.getCaptchaUrl();
+    // проверку делать не надо т.к. капча прийдет в обязательном порядке
+    let captchaUrl = response.data.url;
+
+    dispatch(getCaptchaUrlSuccess(captchaUrl));
 }
 
 export default authReducer;

@@ -7,9 +7,12 @@ import {maxLengthCreator, requiredField, touchCheck} from "../../../utils/valida
 const maxLength = maxLengthCreator(30);
 
 const LoginForm = (props) => {
+    debugger;
     return(
-        <form onSubmit={props.handleSubmit}>
-
+        <form className="login" onSubmit={props.handleSubmit}>
+            {
+                props.text && <div>hello!!!!!!</div>
+            }
             {/*1. устанавливаем redux-form*/}
             {/*2. добавляем в redux-store (import { reducer as formReducer } from 'redux-form')*/}
             {/*3. указываем в reducers - именно form: formReducer */}
@@ -37,10 +40,18 @@ const LoginForm = (props) => {
             {/*Если ошибка в пароле или email отобразить блок*/}
             {
                 props.error &&
-
                 <div className="error-message">
                     {props.error}
                 </div>
+            }
+
+            {/*Если captchaUrl не null показать картинку*/}
+            {
+                props.captchaUrl && <img src={props.captchaUrl} alt="captchaUrl"/>
+            }
+
+            {
+                props.captchaUrl && <Field component={inputForm} name={"captcha"} placeholder={"password"} type={"text"} validate={[requiredField]} />
             }
 
             <div className="btn">
